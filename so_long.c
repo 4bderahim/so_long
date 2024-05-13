@@ -374,6 +374,27 @@ void change_p(char **map)
         i++;
     }
 }
+void set_game(struct s_long ml)
+{
+    put_walls(ml.map, &ml.mlx);
+    put_collectibles(ml.map, ml.mlx);
+    imgg = put_player(ml.map, ml.mlx);
+}
+
+void apply_key(struct s_long mx, mlx_image_t *imgg)
+{
+    if (mx.map[(imgg->instances[0].y /65)-1][imgg->instances[0].x/65] != '1')
+    {
+        if (mx.map[(imgg->instances[0].y/65)-1][imgg->instances[0].x/65] == 'C')
+        {
+            change_p(mx.map);
+            mx.map[(imgg->instances[0].y/65)-1][imgg->instances[0].x/65] = 'P';
+            set_game(mx);
+        }
+        else
+            imgg->instances[0].y -= 65;
+    }
+}
 static void ft_hook(mlx_key_data_t keydata, void * param)
 {
     struct s_long mx;
@@ -386,25 +407,7 @@ static void ft_hook(mlx_key_data_t keydata, void * param)
 		mlx_close_window(mx.mlx);
 	else if (mlx_is_key_down(mx.mlx, MLX_KEY_UP))
 		{
-            if (mx.map[(imgg->instances[0].y/65)-1][imgg->instances[0].x/65] != '1')
-                {
-                    if (mx.map[(imgg->instances[0].y/65)-1][imgg->instances[0].x/65] == 'C')
-                        {
-                            printf("%d||%d\n",imgg->instances[0].y/65-1,imgg->instances[0].x/65);
-                            
-                            change_p(mx.map);
-                            
-                            mx.map[(imgg->instances[0].y/65)-1][imgg->instances[0].x/65] = 'P';
-                            put_walls(mx.map, &mx.mlx);
-                            put_collectibles(mx.map, mx.mlx);
-                        //    put_zrbya(mx.mlx,imgg->instances[0].x/65,(imgg->instances[0].y/65)-1);
-                            imgg = put_player(mx.map, mx.mlx);
-                           //  put_the_cat(mx.mlx,(imgg->instances[0].y/65)-1,imgg->instances[0].x/65);
-                        
-                         }
-                    else
-                        imgg->instances[0].y -= 65;
-                }
+            apply_key(mx, imgg);
         }
 	else if (mlx_is_key_down(mx.mlx, MLX_KEY_DOWN))
     {
@@ -421,17 +424,14 @@ static void ft_hook(mlx_key_data_t keydata, void * param)
         if (mx.map[(imgg->instances[0].y/65)][(imgg->instances[0].x/65)+1] != '1')
                 imgg->instances[0].x += 65;
     }
-		
     usleep(1000);
-   
-
 }
+
 int main()
 {
     int fd;
     char **map;
     fd = open("map.ber", O_RDONLY);
-    
     if (!fd)
         return (0);
     map = mapper(fd);
@@ -451,16 +451,11 @@ int main()
 		ft_error();
         
     struct s_long ml;
-    
     ml.map = map;
     ml.mlx = mlx;
-    
-    // printf("%d");
-    put_walls(map, &mlx);
-    
-    put_collectibles(map, mlx);
-	mlx_key_hook(mlx, ft_hook, &ml);
-    imgg = put_player(map, mlx);
+
+    set_game(ml);
+    mlx_key_hook(mlx, ft_hook, &ml);
    // mlx_loop_hook(mlx, my_keyhook, &mlx);
 	mlx_loop(mlx);
     
