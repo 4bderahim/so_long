@@ -380,19 +380,49 @@ void set_game(struct s_long ml)
     put_collectibles(ml.map, ml.mlx);
     imgg = put_player(ml.map, ml.mlx);
 }
-
-void apply_key(struct s_long mx, mlx_image_t *imgg)
+int move_the_player(struct s_long mx, mlx_image_t *imgg, int y, int x)
 {
-    if (mx.map[(imgg->instances[0].y /65)-1][imgg->instances[0].x/65] != '1')
+    if(mx.map[y][x] == '1')
+        return (0);
+    if(mx.map[y][x] == 'C')
     {
-        if (mx.map[(imgg->instances[0].y/65)-1][imgg->instances[0].x/65] == 'C')
+        change_p(mx.map);
+        mx.map[y][x] = 'P';
+        set_game(mx);
+    }
+    return (1);
+}
+void apply_key(struct s_long mx, mlx_image_t *imgg, int direction)
+{
+    int y;
+    int  x;
+    char next_position;
+
+    if (direction == 1 || direction == 3)
         {
-            change_p(mx.map);
-            mx.map[(imgg->instances[0].y/65)-1][imgg->instances[0].x/65] = 'P';
-            set_game(mx);
+            if (direction == 1)
+                y = (imgg->instances[0].y / 65) - 1;
+            else
+                y = (imgg->instances[0].y / 65) + 1;
+            if (move_the_player(mx, imgg, y, imgg->instances[0].x / 65))
+                {
+                    if (direction == 1)
+                        imgg->instances[0].y -= 65;
+                    else
+                        imgg->instances[0].y += 65;
+                } 
+            return ;
         }
+    if (direction == 4)
+        x = (imgg->instances[0].x / 65) - 1;
+    else
+        x = (imgg->instances[0].x / 65) + 1;
+    if (move_the_player(mx, imgg,imgg->instances[0].y / 65, x))
+    {
+        if (direction == 4)
+            imgg->instances[0].x -= 65;
         else
-            imgg->instances[0].y -= 65;
+            imgg->instances[0].x += 65;
     }
 }
 static void ft_hook(mlx_key_data_t keydata, void * param)
@@ -407,23 +437,28 @@ static void ft_hook(mlx_key_data_t keydata, void * param)
 		mlx_close_window(mx.mlx);
 	else if (mlx_is_key_down(mx.mlx, MLX_KEY_UP))
 		{
-            apply_key(mx, imgg);
+            apply_key(mx, imgg,1);
         }
+    else if (mlx_is_key_down(mx.mlx, MLX_KEY_RIGHT))
+    {
+        apply_key(mx, imgg,2);
+        // if (mx.map[(imgg->instances[0].y/65)][(imgg->instances[0].x/65)+1] != '1')
+        //         imgg->instances[0].x += 65;
+    }
+    else if (mlx_is_key_down(mx.mlx, MLX_KEY_LEFT))
+    {
+        apply_key(mx, imgg,4);
+        // if (mx.map[(imgg->instances[0].y/65)][(imgg->instances[0].x/65)-1] != '1')
+        //         imgg->instances[0].x -= 65;
+    }
 	else if (mlx_is_key_down(mx.mlx, MLX_KEY_DOWN))
     {
-        if (mx.map[(imgg->instances[0].y/65)+1][imgg->instances[0].x/65] != '1')
-                imgg->instances[0].y += 65;
+        apply_key(mx, imgg,3);
+        // if (mx.map[(imgg->instances[0].y/65)+1][imgg->instances[0].x/65] != '1')
+        //         imgg->instances[0].y += 65;
     }
-	else if (mlx_is_key_down(mx.mlx, MLX_KEY_LEFT))
-    {
-        if (mx.map[(imgg->instances[0].y/65)][(imgg->instances[0].x/65)-1] != '1')
-                imgg->instances[0].x -= 65;
-    }
-	else if (mlx_is_key_down(mx.mlx, MLX_KEY_RIGHT))
-    {
-        if (mx.map[(imgg->instances[0].y/65)][(imgg->instances[0].x/65)+1] != '1')
-                imgg->instances[0].x += 65;
-    }
+	
+	
     usleep(1000);
 }
 
