@@ -24,6 +24,7 @@ int32_t ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a)
 void ft_randomize(void* param)
 {
 	(void)param;
+	
 	for (uint32_t i = 0; i < image->width; ++i)
 	{
 		for (uint32_t y = 0; y < image->height; ++y)
@@ -82,7 +83,7 @@ int32_t main(void)
 	}
 	
 	printf("width is : %d\n", mlx->height);
-	mlx_loop_hook(mlx, ft_randomize, mlx);
+	mlx_loop_hook(mlx, ft_randomize, mlxz);
 	mlx_loop_hook(mlx, ft_hook, mlx);
 
 	mlx_loop(mlx);

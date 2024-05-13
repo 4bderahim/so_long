@@ -1,5 +1,5 @@
 NAME	:= Game
-CFLAGS	:=  -Wunreachable-code -Ofast
+CFLAGS	:=  -Wunreachable-code -Ofast 
 LIBMLX	:= ~/MLX42
 
 HEADERS	:= -I ./include -I $(LIBMLX)/include
@@ -17,7 +17,7 @@ libmlx:
 	@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS) && printf "Compiling: $(notdir $<)"
 
 $(NAME): $(OBJS)
-	@$(CC) $(OBJS) $(MLX_FLAGS) $(LIBS) $(HEADERS) -o $(NAME)
+	@$(CC)  $(OBJS) $(MLX_FLAGS) $(LIBS) $(HEADERS) -o $(NAME)
 
 clean:
 	@rm -rf $(OBJS)

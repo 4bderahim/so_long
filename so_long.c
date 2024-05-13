@@ -1,10 +1,12 @@
 #include "so_long.h"
 // #include 
 #include <MLX42/MLX42.h>
-
+//#include "./mlx.h"
 #define HEIGHT 600
 #define WIDTH 900
 static char** map;
+
+static mlx_image_t* imgg;
 int ft_strlen(char const *s)
 {
     int i ;
@@ -225,15 +227,16 @@ void put_collectibles(char **map, mlx_t *mlx)
         i++;
     }
 }
-void put_the_cat(mlx_t *mlx, int j, int i)
+mlx_image_t *put_the_cat(mlx_t *mlx, int j, int i)
 {
     
     mlx_texture_t* texture = mlx_load_png("./caat.png");
     mlx_image_t* img = mlx_texture_to_image(mlx, texture);
     mlx_image_to_window(mlx,img, j*65, i*65);
+    return (img);
 
 }
-void put_player(char **map, mlx_t *mlx)
+mlx_image_t *put_player(char **map, mlx_t *mlx)
 {
     int i;
     int j;
@@ -245,19 +248,20 @@ void put_player(char **map, mlx_t *mlx)
         j = 0;
         while (map[i][j])
         {
-            if (map[i][j] == 'E')
-            {
-                put_the_dog(mlx, j, i);
-            }
+            // if (map[i][j] == 'E')
+            // {
+            //     put_the_dog(mlx, j, i);
+            // }
             if (map[i][j] == 'P')
                 {
-                    put_the_cat(mlx, j, i);
+                    return (put_the_cat(mlx, j, i));
                 }
             
             j++;
         }
         i++;
     }
+    return (NULL);
 }
 
 void put_walls(char **map, mlx_t **mlxx)
@@ -281,6 +285,7 @@ void put_walls(char **map, mlx_t **mlxx)
                 {
                     
                     mlx_image_to_window(mlx, img, j*65, i*65);
+                
                 }
             if (map[i][j] == 'E')
                 put_the_dog(mlx, j*65, i*65);
@@ -321,11 +326,12 @@ void put_the_dog__( mlx_t *mlx, int j, int i)
     // mlx_image_to_window(mlx, img, j*65, i*65); 
     mlx_texture_t* texture1 = mlx_load_png("./dawg_flip.png");
     mlx_image_t* img1 = mlx_texture_to_image(mlx, texture1);
+    
     mlx_image_to_window(mlx, img1, j*65, i*65);
     printf("%d||%d\n\n", j,i);
     
 }
-void go_down(mlx_t *mlx, char **map)
+int go_down(mlx_t *mlx, char **map)
 {
 
     int i;
@@ -337,39 +343,87 @@ void go_down(mlx_t *mlx, char **map)
     while (map[i])
     {
         j = 0;
-        printf("################\n4444");
         while (map[i][j])
         {
             
             if (map[i][j] == 'p')
             {
-                
-                if (map[i+1][j] != '1')
-                    put_zrbya(mlx, j, i);
-                put_the_dog__(mlx, j, i+1);
+                return (i);
             }
             j++;
         }
         i++;
     }
+    return (0);
 }
-
-static void my_keyhook(void * param)
+void change_p(char **map)
 {
-    mlx_t *mlx;
+    int i;
+    int j;
 
-    mlx = param;
-    if (mlx_is_key_down(mlx, MLX_KEY_ESCAPE))
-		mlx_close_window(mlx);
-    else if (mlx_is_key_down(mlx, MLX_KEY_DOWN))
-		go_down(mlx, map);
-
-    // if (mlx_is_key_down(mlx, MLX_KEY_DOWN))
-	// 	{
-    //         printf("He;o wdsa");
-    //         go_down(mlx);
-    //     }
-
+    i = 0;
+    while (map[i])
+    {
+        j = 0;
+        while (map[i][j])
+        {
+            if (map[i][j] == 'P')
+                map[i][j] = '0';
+            j++;
+        }
+        i++;
+    }
+}
+static void ft_hook(mlx_key_data_t keydata, void * param)
+{
+    struct s_long mx;
+    
+    mx = *(struct s_long*)param;
+    
+    if (mlx_is_key_down(mx.mlx, MLX_KEY_ESCAPE))
+		mlx_close_window(mx.mlx);
+    if (mlx_is_key_down(mx.mlx, MLX_KEY_ESCAPE))
+		mlx_close_window(mx.mlx);
+	else if (mlx_is_key_down(mx.mlx, MLX_KEY_UP))
+		{
+            if (mx.map[(imgg->instances[0].y/65)-1][imgg->instances[0].x/65] != '1')
+                {
+                    if (mx.map[(imgg->instances[0].y/65)-1][imgg->instances[0].x/65] == 'C')
+                        {
+                            printf("%d||%d\n",imgg->instances[0].y/65-1,imgg->instances[0].x/65);
+                            
+                            change_p(mx.map);
+                            
+                            mx.map[(imgg->instances[0].y/65)-1][imgg->instances[0].x/65] = 'P';
+                            put_walls(mx.map, &mx.mlx);
+                            put_collectibles(mx.map, mx.mlx);
+                        //    put_zrbya(mx.mlx,imgg->instances[0].x/65,(imgg->instances[0].y/65)-1);
+                            imgg = put_player(mx.map, mx.mlx);
+                           //  put_the_cat(mx.mlx,(imgg->instances[0].y/65)-1,imgg->instances[0].x/65);
+                        
+                         }
+                    else
+                        imgg->instances[0].y -= 65;
+                }
+        }
+	else if (mlx_is_key_down(mx.mlx, MLX_KEY_DOWN))
+    {
+        if (mx.map[(imgg->instances[0].y/65)+1][imgg->instances[0].x/65] != '1')
+                imgg->instances[0].y += 65;
+    }
+	else if (mlx_is_key_down(mx.mlx, MLX_KEY_LEFT))
+    {
+        if (mx.map[(imgg->instances[0].y/65)][(imgg->instances[0].x/65)-1] != '1')
+                imgg->instances[0].x -= 65;
+    }
+	else if (mlx_is_key_down(mx.mlx, MLX_KEY_RIGHT))
+    {
+        if (mx.map[(imgg->instances[0].y/65)][(imgg->instances[0].x/65)+1] != '1')
+                imgg->instances[0].x += 65;
+    }
+		
+    usleep(1000);
+   
 
 }
 int main()
@@ -391,32 +445,27 @@ int main()
     if (!map)
         return (0);
     
-    mlx_set_setting(MLX_MAXIMIZED, true);
+    //mlx_set_setting(MLX_MAXIMIZED, true);
 	mlx_t* mlx = mlx_init(get_height_width(map, 0)*65, get_height_width(map, 1)*65, "a title", false);
     if (!mlx)
 		ft_error();
-
-	/* Do stuff */
-
-	// Create and display the image.
-	// mlx_image_t* g = mlx_new_image(mlx, HEIGHT, WIDTH);
-	// if (!img || (mlx_image_to_window(mlx, g, 0, 0) < 0))
-	// 	ft_error();
-	
-	// mlx_put_pixel(g, 100, 188, 0xFF0000FF);
-    // mlx_texture_t* texture = mlx_load_png("./box.png");
-    // mlx_image_t* img = mlx_texture_to_image(mlx, texture);
-    // //mlx_image_to_window(mlx, img, 0, 0);
-    //put_zrbya(mlx);
+        
+    struct s_long ml;
+    
+    ml.map = map;
+    ml.mlx = mlx;
+    
+    // printf("%d");
     put_walls(map, &mlx);
-    put_player(map, mlx);
+    
     put_collectibles(map, mlx);
-	//mlx_loop_hook(mlx, ft_hook, mlx);
-    mlx_loop_hook(mlx, my_keyhook, mlx);
+	mlx_key_hook(mlx, ft_hook, &ml);
+    imgg = put_player(map, mlx);
+   // mlx_loop_hook(mlx, my_keyhook, &mlx);
 	mlx_loop(mlx);
+    
 	mlx_terminate(mlx);
 	return (EXIT_SUCCESS);
-    
     
     // system("leaks -q a.out");
     // return (0);
