@@ -196,7 +196,7 @@ void put_zrbya( mlx_t *mlx, int j, int i)
 
 void put_exit( mlx_t *mlx, int j, int i)
 {
-    mlx_texture_t* texture = mlx_load_png("./cat_exit.png");
+    mlx_texture_t* texture = mlx_load_png("./exit_cat.png");
     mlx_image_t* img = mlx_texture_to_image(mlx, texture);
     mlx_image_to_window(mlx, img, j*65, i*65); 
     
@@ -241,7 +241,7 @@ void put_collectibles(char **map, mlx_t *mlx)
     int j;
     i = 0;
     
-    mlx_texture_t* texture = mlx_load_png("./ball_.png");
+    mlx_texture_t* texture = mlx_load_png("./fisher.png");
     mlx_image_t* img = mlx_texture_to_image(mlx, texture);
     
     while (map[i])
@@ -412,6 +412,25 @@ void set_game(struct s_long ml)
     imgg = put_player(ml.map, ml.mlx);
     put_the_exit(ml.map, ml.mlx);
 }
+int check_collect(char **map)
+{
+    int i;
+    int j;
+
+    i = 0;
+    while (map[i])
+    {
+        j = 0;
+        while (map[i][j])
+        {
+            if (map[i][j] == 'C')
+                return (1);
+            j++;
+        }
+        i++;
+    }
+    return (0);
+}
 int move_the_player(struct s_long mx, mlx_image_t *imgg, int y, int x)
 {
     if(mx.map[y][x] == '1')
@@ -424,10 +443,14 @@ int move_the_player(struct s_long mx, mlx_image_t *imgg, int y, int x)
     }
     if (mx.map[y][x] == 'E')
         {
-            set_game(mx);  
-            change_p(mx.map);
-            mlx_close_window(mx.mlx);
+            if (!check_collect(mx.map))
+            {
+                set_game(mx);  
+                change_p(mx.map);
+                mlx_close_window(mx.mlx);
+            }
         }
+   
 
     return (1);
 }
@@ -488,8 +511,6 @@ static void ft_hook(mlx_key_data_t keydata, void * param)
     {
         apply_key(mx, imgg,3);
     }
-	
-	
     usleep(1000);
 }
 
