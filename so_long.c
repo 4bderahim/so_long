@@ -1,6 +1,6 @@
 #include "so_long.h"
 // #include 
-#include <MLX42/MLX42.h>
+//#include <MLX42/MLX42.h>
 //#include "./mlx.h"
 #define HEIGHT 600
 #define WIDTH 900
@@ -186,7 +186,7 @@ static void ft_error(void)
 // }
 void put_zrbya( mlx_t *mlx, int j, int i)
 {
-    mlx_texture_t* texture = mlx_load_png("./carpet.png");
+    mlx_texture_t* texture = mlx_load_png("./pngs/back_grround.png");
     mlx_image_t* img = mlx_texture_to_image(mlx, texture);
     if (mlx_image_to_window(mlx, img, j*65, i*65) == -1) 
     {
@@ -196,7 +196,7 @@ void put_zrbya( mlx_t *mlx, int j, int i)
 
 void put_exit( mlx_t *mlx, int j, int i)
 {
-    mlx_texture_t* texture = mlx_load_png("./exit_cat.png");
+    mlx_texture_t* texture = mlx_load_png("./pngs/exit_door.png");
     mlx_image_t* img = mlx_texture_to_image(mlx, texture);
     mlx_image_to_window(mlx, img, j*65, i*65); 
     
@@ -228,20 +228,14 @@ mlx_image_t *put_the_exit(char **map, mlx_t *mlx)
     }
     return (NULL);
 }
-// void put_the_dog( mlx_t *mlx, int j, int i)
-// {
-//     mlx_texture_t* texture = mlx_load_png("./dawg.png");
-//     mlx_image_t* img = mlx_texture_to_image(mlx, texture);
-//     mlx_image_to_window(mlx, img, j*65, i*65); 
-    
-// }
+
 void put_collectibles(char **map, mlx_t *mlx)
 {
     int i;
     int j;
     i = 0;
     
-    mlx_texture_t* texture = mlx_load_png("./fisher.png");
+    mlx_texture_t* texture = mlx_load_png("./pngs/fish.png");
     mlx_image_t* img = mlx_texture_to_image(mlx, texture);
     
     while (map[i])
@@ -251,10 +245,8 @@ void put_collectibles(char **map, mlx_t *mlx)
         {
             if (map[i][j] == 'C')
                 {
-                    
                     mlx_image_to_window(mlx, img, j*65, i*65);
                 }
-            
             j++;
         }
         i++;
@@ -262,8 +254,7 @@ void put_collectibles(char **map, mlx_t *mlx)
 }
 mlx_image_t *put_the_cat(mlx_t *mlx, int j, int i)
 {
-    
-    mlx_texture_t* texture = mlx_load_png("./caat.png");
+    mlx_texture_t* texture = mlx_load_png("./pngs/caat.png");
     mlx_image_t* img = mlx_texture_to_image(mlx, texture);
     mlx_image_to_window(mlx,img, j*65, i*65);
     return (img);
@@ -306,7 +297,7 @@ void put_walls(char **map, mlx_t **mlxx)
     mlx_t *mlx;
 
     mlx = *mlxx;
-    mlx_texture_t* texture = mlx_load_png("./box.png");
+    mlx_texture_t* texture = mlx_load_png("./pngs/box.png");
     mlx_image_t* img = mlx_texture_to_image(mlx, texture);
     
     while (map[i])
@@ -354,7 +345,7 @@ void put_the_dog__( mlx_t *mlx, int j, int i)
     // mlx_texture_t* texture = mlx_load_png("./dawg.png");
     // mlx_image_t* img = mlx_texture_to_image(mlx, texture);
     // mlx_image_to_window(mlx, img, j*65, i*65); 
-    mlx_texture_t* texture1 = mlx_load_png("./dawg_flip.png");
+    mlx_texture_t* texture1 = mlx_load_png("./pngs/dawg_flip.png");
     mlx_image_t* img1 = mlx_texture_to_image(mlx, texture1);
     
     mlx_image_to_window(mlx, img1, j*65, i*65);
@@ -494,15 +485,16 @@ static void ft_hook(mlx_key_data_t keydata, void * param)
     mx = *(struct s_long*)param;
     
     if (mlx_is_key_down(mx.mlx, MLX_KEY_ESCAPE))
-		mlx_close_window(mx.mlx);
+		{
+            
+            mlx_close_window(mx.mlx);
+        }
 	else if (mlx_is_key_down(mx.mlx, MLX_KEY_UP))
 		{
             apply_key(mx, imgg,1);
         }
     else if (mlx_is_key_down(mx.mlx, MLX_KEY_RIGHT))
-    {
         apply_key(mx, imgg,2);
-    }
     else if (mlx_is_key_down(mx.mlx, MLX_KEY_LEFT))
     {
         apply_key(mx, imgg,4);
