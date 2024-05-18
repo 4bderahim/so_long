@@ -44,7 +44,6 @@ int a_map_brick(char c)
                     return (1);
                 i++;
             }
-        printf("\t[%c]\n", c);
         return (0);
 }
 int check_map_bricks(char **map)
@@ -77,7 +76,7 @@ int check_map_bricks(char **map)
 }
 int check_map(char **map)
 {
-    if (!borders_check(map))
+    if (!borders_check(map) )
         exit(0);
     return (0);
 }

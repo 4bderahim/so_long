@@ -4,9 +4,9 @@
 //#include "./mlx.h"
 #define HEIGHT 600
 #define WIDTH 900
-static char** map;
 
-static mlx_image_t* imgg;
+
+
 int ft_strlen(char const *s)
 {
     int i ;
@@ -171,28 +171,7 @@ static void ft_error(void)
 	exit(EXIT_FAILURE);
 }
 
-// Print the window width and height.
-// static void ft_hook(void* param)
-// {
-// 	const mlx_t* mlx = param;
-//     mlx_texture_t* texture = mlx_load_png("./dawg_flip.png");
-//     mlx_image_t* img = mlx_texture_to_image(mlx, texture);
-//     mlx_image_to_window(mlx, img, j*65, i*65); 
 
-//     mlx_texture_t* texture1 = mlx_load_png("./dawg_flip_flip.png");
-//     mlx_image_t* img1 = mlx_texture_to_image(mlx, texture1);
-//     mlx_image_to_window(mlx, img1, j*65, i*65);
-// 	//printf("WIDTH: %d | HEIGHT: %d\n", mlx->width, mlx->height);
-// }
-void put_zrbya( mlx_t *mlx, int j, int i)
-{
-    mlx_texture_t* texture = mlx_load_png("./pngs/back_grround.png");
-    mlx_image_t* img = mlx_texture_to_image(mlx, texture);
-    if (mlx_image_to_window(mlx, img, j*65, i*65) == -1) 
-    {
-        printf("\t\t\tHelo \n\tworld");
-    }
-}
 
 void put_exit( mlx_t *mlx, int j, int i)
 {
@@ -201,121 +180,14 @@ void put_exit( mlx_t *mlx, int j, int i)
     mlx_image_to_window(mlx, img, j*65, i*65); 
     
 }
-mlx_image_t *put_the_exit(char **map, mlx_t *mlx)
-{
-    int i;
-    int j;
-    i = 0;
-    
-   
-    while (map[i])
-    {
-        j = 0;
-        while (map[i][j])
-        {
-            // if (map[i][j] == 'E')
-            // {
-            //     put_the_dog(mlx, j, i);
-            // }
-            if (map[i][j] == 'E')
-                {
-                    put_exit(mlx, j, i);
-                }
-            
-            j++;
-        }
-        i++;
-    }
-    return (NULL);
-}
 
-void put_collectibles(char **map, mlx_t *mlx)
-{
-    int i;
-    int j;
-    i = 0;
-    
-    mlx_texture_t* texture = mlx_load_png("./pngs/fish.png");
-    mlx_image_t* img = mlx_texture_to_image(mlx, texture);
-    
-    while (map[i])
-    {
-        j = 0;
-        while (map[i][j])
-        {
-            if (map[i][j] == 'C')
-                {
-                    mlx_image_to_window(mlx, img, j*65, i*65);
-                }
-            j++;
-        }
-        i++;
-    }
-}
 mlx_image_t *put_the_cat(mlx_t *mlx, int j, int i)
 {
     mlx_texture_t* texture = mlx_load_png("./pngs/caat.png");
     mlx_image_t* img = mlx_texture_to_image(mlx, texture);
     mlx_image_to_window(mlx,img, j*65, i*65);
     return (img);
-
 }
-
-mlx_image_t *put_player(char **map, mlx_t *mlx)
-{
-    int i;
-    int j;
-    i = 0;
-    
-   
-    while (map[i])
-    {
-        j = 0;
-        while (map[i][j])
-        {
-            // if (map[i][j] == 'E')
-            // {
-            //     put_the_dog(mlx, j, i);
-            // }
-            if (map[i][j] == 'P')
-                {
-                    return (put_the_cat(mlx, j, i));
-                }
-            
-            j++;
-        }
-        i++;
-    }
-    return (NULL);
-}
-
-void put_walls(char **map, mlx_t **mlxx)
-{
-    int i;
-    int j;
-    i = 0;
-    mlx_t *mlx;
-
-    mlx = *mlxx;
-    mlx_texture_t* texture = mlx_load_png("./pngs/box.png");
-    mlx_image_t* img = mlx_texture_to_image(mlx, texture);
-    
-    while (map[i])
-    {
-        j = 0;
-        while (map[i][j])
-        {
-            put_zrbya(mlx, j, i);
-            if (map[i][j] == '1')
-                {
-                    mlx_image_to_window(mlx, img, j*65, i*65);
-                }
-            j++;
-        }
-        i++;
-    }
-}
-
 
 int get_height_width(char **map, int height_or_width_command)
 {
@@ -338,20 +210,7 @@ int get_height_width(char **map, int height_or_width_command)
     }
     
 }
-void put_the_dog__( mlx_t *mlx, int j, int i)
-{
-    
-    
-    // mlx_texture_t* texture = mlx_load_png("./dawg.png");
-    // mlx_image_t* img = mlx_texture_to_image(mlx, texture);
-    // mlx_image_to_window(mlx, img, j*65, i*65); 
-    mlx_texture_t* texture1 = mlx_load_png("./pngs/dawg_flip.png");
-    mlx_image_t* img1 = mlx_texture_to_image(mlx, texture1);
-    
-    mlx_image_to_window(mlx, img1, j*65, i*65);
-    printf("%d||%d\n\n", j,i);
-    
-}
+
 int go_down(mlx_t *mlx, char **map)
 {
 
@@ -395,14 +254,7 @@ void change_p(char **map)
         i++;
     }
 }
-void set_game(struct s_long ml)
-{
-    put_walls(ml.map, &ml.mlx);
-    put_collectibles(ml.map, ml.mlx);
-    
-    imgg = put_player(ml.map, ml.mlx);
-    put_the_exit(ml.map, ml.mlx);
-}
+
 int check_collect(char **map)
 {
     int i;
@@ -422,7 +274,7 @@ int check_collect(char **map)
     }
     return (0);
 }
-int move_the_player(struct s_long mx, mlx_image_t *imgg, int y, int x)
+int move_the_player(struct s_long mx, int y, int x)
 {
     if(mx.map[y][x] == '1')
         return (0);
@@ -445,37 +297,40 @@ int move_the_player(struct s_long mx, mlx_image_t *imgg, int y, int x)
 
     return (1);
 }
-void apply_key(struct s_long mx, mlx_image_t *imgg, int direction)
+void apply_key(struct s_long mx, int direction)
 {
     int y;
     int  x;
     char next_position;
-
+    printf("\n\n\n\n\n{0}\n");
     if (direction == 1 || direction == 3)
         {
+            printf("{0}\n");
             if (direction == 1)
-                y = (imgg->instances[0].y / 65) - 1;
+                y = (mx.imgg[0]->instances[0].y / 65) - 1;
             else
-                y = (imgg->instances[0].y / 65) + 1;
-            if (move_the_player(mx, imgg, y, imgg->instances[0].x / 65))
+                y = (mx.imgg[0]->instances[0].y / 65) + 1;
+            printf("{}\n");
+            if (move_the_player(mx,  y, mx.imgg[0]->instances[0].x / 65))
                 {
                     if (direction == 1)
-                        imgg->instances[0].y -= 65;
+                        mx.imgg[0]->instances[0].y -= 65;
                     else
-                        imgg->instances[0].y += 65;
+                        mx.imgg[0]->instances[0].y += 65;
                 } 
+            printf("{0}\n");
             return ;
         }
     if (direction == 4)
-        x = (imgg->instances[0].x / 65) - 1;
+        x = (mx.imgg[0]->instances[0].x / 65) - 1;
     else
-        x = (imgg->instances[0].x / 65) + 1;
-    if (move_the_player(mx, imgg,imgg->instances[0].y / 65, x))
+        x = (mx.imgg[0]->instances[0].x / 65) + 1;
+    if (move_the_player(mx,mx.imgg[0]->instances[0].y / 65, x))
     {
         if (direction == 4)
-            imgg->instances[0].x -= 65;
+            mx.imgg[0]->instances[0].x -= 65;
         else
-            imgg->instances[0].x += 65;
+            mx.imgg[0]->instances[0].x += 65;
     }
 }
 static void ft_hook(mlx_key_data_t keydata, void * param)
@@ -491,17 +346,17 @@ static void ft_hook(mlx_key_data_t keydata, void * param)
         }
 	else if (mlx_is_key_down(mx.mlx, MLX_KEY_UP))
 		{
-            apply_key(mx, imgg,1);
+            apply_key(mx,1);
         }
     else if (mlx_is_key_down(mx.mlx, MLX_KEY_RIGHT))
-        apply_key(mx, imgg,2);
+        apply_key(mx, 2);
     else if (mlx_is_key_down(mx.mlx, MLX_KEY_LEFT))
     {
-        apply_key(mx, imgg,4);
+        apply_key(mx, 4);
     }
 	else if (mlx_is_key_down(mx.mlx, MLX_KEY_DOWN))
     {
-        apply_key(mx, imgg,3);
+        apply_key(mx, 3);
     }
     usleep(1000);
 }
@@ -510,11 +365,15 @@ int main()
 {
     int fd;
     char **map;
+    
+   
     fd = open("map.ber", O_RDONLY);
     if (!fd)
         return (0);
     map = mapper(fd);
+     printf("\t#--d-@\n\n\n");
     check_map(map);
+    printf("\t#--~-@\n\n\n");
     fd = 0;
     while (map[fd])
         {
@@ -528,12 +387,14 @@ int main()
 	mlx_t* mlx = mlx_init(get_height_width(map, 0)*65, get_height_width(map, 1)*65, "a title", false);
     if (!mlx)
 		ft_error();
-        
+    printf("\t#--~-@\n\n\n");
     struct s_long ml;
     ml.map = map;
     ml.mlx = mlx;
-
+    printf("\t#--~-@\n\n\n");
+    
     set_game(ml);
+    printf("\t#--~-@\n\n\n");
     mlx_key_hook(mlx, ft_hook, &ml);
    // mlx_loop_hook(mlx, my_keyhook, &mlx);
 	mlx_loop(mlx);
