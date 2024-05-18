@@ -274,7 +274,11 @@ int check_collect(char **map)
     }
     return (0);
 }
-int move_the_player(struct s_long mx, int y, int x)
+
+
+
+// make double pointer to modify
+int move_the_player(struct s_long mx, int y, int x, mlx_image_t **img)
 {
     if(mx.map[y][x] == '1')
         return (0);
@@ -282,18 +286,18 @@ int move_the_player(struct s_long mx, int y, int x)
     {
         change_p(mx.map);
         mx.map[y][x] = 'P';
-        set_game(mx);    
+        *img =  set_game(mx);    
     }
     if (mx.map[y][x] == 'E')
         {
             if (!check_collect(mx.map))
             {
-                set_game(mx);  
+                mx.imgg =  set_game(mx); 
                 change_p(mx.map);
                 mlx_close_window(mx.mlx);
             }
         }
-   
+    printf("\t\t\t|afzter|%d||\n", (mx.imgg->instances[0].y / 65));
 
     return (1);
 }
@@ -305,32 +309,33 @@ void apply_key(struct s_long mx, int direction)
     printf("\n\n\n\n\n{0}\n");
     if (direction == 1 || direction == 3)
         {
-            printf("{0}\n");
+            
             if (direction == 1)
-                y = (mx.imgg[0]->instances[0].y / 65) - 1;
+                y = (mx.imgg->instances[0].y / 65) - 1;
             else
-                y = (mx.imgg[0]->instances[0].y / 65) + 1;
-            printf("{}\n");
-            if (move_the_player(mx,  y, mx.imgg[0]->instances[0].x / 65))
+                y = (mx.imgg->instances[0].y / 65) + 1;
+            printf("\t\t\t|before|%d||\n", (mx.imgg->instances[0].y / 65));
+            if (move_the_player(mx, y, mx.imgg->instances[0].x / 65), &(mx.imgg))
                 {
+                    printf("\t\t\t|after|%d||\n", (mx.imgg->instances[0].y / 65));
                     if (direction == 1)
-                        mx.imgg[0]->instances[0].y -= 65;
+                        mx.imgg->instances[0].y -= 65;
                     else
-                        mx.imgg[0]->instances[0].y += 65;
+                        mx.imgg->instances[0].y += 65;
                 } 
             printf("{0}\n");
             return ;
         }
     if (direction == 4)
-        x = (mx.imgg[0]->instances[0].x / 65) - 1;
+        x = (mx.imgg->instances[0].x / 65) - 1;
     else
-        x = (mx.imgg[0]->instances[0].x / 65) + 1;
-    if (move_the_player(mx,mx.imgg[0]->instances[0].y / 65, x))
+        x = (mx.imgg->instances[0].x / 65) + 1;
+    if (move_the_player(mx,mx.imgg->instances[0].y / 65, x))
     {
         if (direction == 4)
-            mx.imgg[0]->instances[0].x -= 65;
+            mx.imgg->instances[0].x -= 65;
         else
-            mx.imgg[0]->instances[0].x += 65;
+            mx.imgg->instances[0].x += 65;
     }
 }
 static void ft_hook(mlx_key_data_t keydata, void * param)
@@ -393,7 +398,7 @@ int main()
     ml.mlx = mlx;
     printf("\t#--~-@\n\n\n");
     
-    set_game(ml);
+    ml.imgg = set_game(ml);
     printf("\t#--~-@\n\n\n");
     mlx_key_hook(mlx, ft_hook, &ml);
    // mlx_loop_hook(mlx, my_keyhook, &mlx);

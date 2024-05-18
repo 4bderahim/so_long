@@ -120,12 +120,16 @@ mlx_image_t *put_player(char **map, mlx_t *mlx)
     return (NULL);
 }
 
-void set_game(struct s_long ml)
+mlx_image_t *set_game(struct s_long ml)
 {
     mlx_image_t* img;
     put_walls(ml.map, &ml.mlx);
     
-    ml.imgg  = &put_player(ml.map, ml.mlx);
+    ml.imgg  = put_player(ml.map, ml.mlx);
+    if (ml.imgg == NULL)
+        printf("\n\n\n{~~~~}\n\n");
+    printf("\t%d|\n", ml.imgg->instances[0].y);
     put_collectibles(ml.map, ml.mlx);
     put_the_exit(ml.map, ml.mlx);
+    return (ml.imgg);
 }
