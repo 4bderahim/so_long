@@ -171,14 +171,11 @@ static void ft_error(void)
 	exit(EXIT_FAILURE);
 }
 
-
-
 void put_exit( mlx_t *mlx, int j, int i)
 {
     mlx_texture_t* texture = mlx_load_png("./pngs/exit_door.png");
     mlx_image_t* img = mlx_texture_to_image(mlx, texture);
-    mlx_image_to_window(mlx, img, j*65, i*65); 
-    
+    mlx_image_to_window(mlx, img, j*65, i*65);    
 }
 
 mlx_image_t *put_the_cat(mlx_t *mlx, int j, int i)
@@ -275,68 +272,80 @@ int check_collect(char **map)
     return (0);
 }
 
-
-
-// make double pointer to modify
-int move_the_player(struct s_long mx, int y, int x, mlx_image_t **img)
+void next_step(struct s_long *l,int direction)
 {
-    if(mx.map[y][x] == '1')
-        return (0);
-    if(mx.map[y][x] == 'C')
-    {
-        change_p(mx.map);
-        mx.map[y][x] = 'P';
-        *img =  set_game(mx);    
-    }
-    if (mx.map[y][x] == 'E')
-        {
-            if (!check_collect(mx.map))
-            {
-                mx.imgg =  set_game(mx); 
-                change_p(mx.map);
-                mlx_close_window(mx.mlx);
-            }
-        }
-    printf("\t\t\t|afzter|%d||\n", (mx.imgg->instances[0].y / 65));
-
-    return (1);
+    struct s_long ll;
+    ll = *l;
+    if (direction == 1)
+        ll.imgg->instances[0].y = ll.cu_y - 65;
+    else if (direction == 3)
+        ll.imgg->instances[0].y = ll.cu_y + 65 ;
+    else if (direction == 2)
+        ll.imgg->instances[0].x = ll.cu_x + 65;
+    else if (direction == 4)
+        ll.imgg->instances[0].x = ll.cu_x - 65;
+    *l = ll;
 }
-void apply_key(struct s_long mx, int direction)
+
+int move_the_player(struct s_long *mx, int  direction)
 {
+    struct s_long mlx;
+    
     int y;
     int  x;
-    char next_position;
-    printf("\n\n\n\n\n{0}\n");
+
+    mlx  = *mx;
+    mx->cu_x = mlx.imgg->instances[0].x;
+    mx->cu_y = mlx.imgg->instances[0].y ;
+    y = mlx.imgg->instances[0].y / 65;
+    x = mlx.imgg->instances[0].x / 65;
     if (direction == 1 || direction == 3)
+    {
+        y += 1;
+        if (direction == 1)
+            y -= 2;
+    }
+    else
+    {
+        x += 1;
+        if (direction == 4)
+            x -= 2;
+    }
+    if(mlx.map[y][x] == 'C')
+    {
+      
+        mlx.map[y][x] = 'P';
+        put_bg(mlx.mlx, x, y);
+        mlx.imgg  = put_player(mlx.map, mlx.mlx);
+    }
+    if(mlx.map[y][x] == '1')
+        return (-1);
+    if (mlx.map[y][x] == 'E')
         {
-            
-            if (direction == 1)
-                y = (mx.imgg->instances[0].y / 65) - 1;
-            else
-                y = (mx.imgg->instances[0].y / 65) + 1;
-            printf("\t\t\t|before|%d||\n", (mx.imgg->instances[0].y / 65));
-            if (move_the_player(mx, y, mx.imgg->instances[0].x / 65), &(mx.imgg))
-                {
-                    printf("\t\t\t|after|%d||\n", (mx.imgg->instances[0].y / 65));
-                    if (direction == 1)
-                        mx.imgg->instances[0].y -= 65;
-                    else
-                        mx.imgg->instances[0].y += 65;
-                } 
-            printf("{0}\n");
+            if (!check_collect(mlx.map))
+            {
+                mlx.imgg = set_game(&mlx);
+                change_p(mlx.map);
+                mlx_close_window(mlx.mlx);
+            }
+        }
+    next_step(&mlx, direction);
+    *mx = mlx;
+    return (1);
+}
+
+void apply_key(struct s_long mx, int direction)
+{
+    
+    char next_position;
+    mx.map[mx.imgg->instances[0].y/65][mx.imgg->instances[0].x/65] = '0';
+    if (direction == 1 || direction == 3)
+        {  
+            move_the_player(&mx,  direction);
             return ;
         }
-    if (direction == 4)
-        x = (mx.imgg->instances[0].x / 65) - 1;
-    else
-        x = (mx.imgg->instances[0].x / 65) + 1;
-    if (move_the_player(mx,mx.imgg->instances[0].y / 65, x))
-    {
-        if (direction == 4)
-            mx.imgg->instances[0].x -= 65;
-        else
-            mx.imgg->instances[0].x += 65;
-    }
+    move_the_player(&mx, direction);
+    
 }
 static void ft_hook(mlx_key_data_t keydata, void * param)
 {
@@ -376,9 +385,9 @@ int main()
     if (!fd)
         return (0);
     map = mapper(fd);
-     printf("\t#--d-@\n\n\n");
+    
     check_map(map);
-    printf("\t#--~-@\n\n\n");
+    
     fd = 0;
     while (map[fd])
         {
@@ -392,14 +401,12 @@ int main()
 	mlx_t* mlx = mlx_init(get_height_width(map, 0)*65, get_height_width(map, 1)*65, "a title", false);
     if (!mlx)
 		ft_error();
-    printf("\t#--~-@\n\n\n");
     struct s_long ml;
     ml.map = map;
     ml.mlx = mlx;
-    printf("\t#--~-@\n\n\n");
-    
-    ml.imgg = set_game(ml);
-    printf("\t#--~-@\n\n\n");
+    printf("\t\t[#]\n");
+    ml.imgg = set_game(&ml);
+    printf("\t\t[#]\n");
     mlx_key_hook(mlx, ft_hook, &ml);
    // mlx_loop_hook(mlx, my_keyhook, &mlx);
 	mlx_loop(mlx);

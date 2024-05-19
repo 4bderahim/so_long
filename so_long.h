@@ -7,17 +7,19 @@
 #ifndef SO_LONG
 #define SO_LONG
 
-
 struct s_long
 {
     mlx_t *mlx;
     char **map;
     mlx_image_t* imgg;
+    int32_t cu_y;
+    int32_t cu_x;
 };
 int ft_strlen(char const *s);
 int check_map(char **map);
-mlx_image_t *set_game(struct s_long ml);
+mlx_image_t *set_game(struct s_long *ml);
 mlx_image_t *put_the_cat(mlx_t *mlx, int j, int i);
-void pt_bg( mlx_t *mlx, int j, int i);
+void put_bg( mlx_t *mlx, int j, int i);
 void put_exit( mlx_t *mlx, int j, int i);
+mlx_image_t *put_player(char **map, mlx_t *mlx);
 #endif
