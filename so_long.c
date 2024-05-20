@@ -276,6 +276,7 @@ void next_step(struct s_long *l,int direction)
 {
     struct s_long ll;
     ll = *l;
+    printf("%d|%d|\n", ll.cu_x, ll.cu_y) ;
     if (direction == 1)
         ll.imgg->instances[0].y = ll.cu_y - 65;
     else if (direction == 3)
@@ -296,7 +297,7 @@ int move_the_player(struct s_long *mx, int  direction)
 
     mlx  = *mx;
     mx->cu_x = mlx.imgg->instances[0].x;
-    mx->cu_y = mlx.imgg->instances[0].y ;
+    mx->cu_y = mlx.imgg->instances[0].y;
     y = mlx.imgg->instances[0].y / 65;
     x = mlx.imgg->instances[0].x / 65;
     if (direction == 1 || direction == 3)
@@ -329,7 +330,7 @@ int move_the_player(struct s_long *mx, int  direction)
                 mlx_close_window(mlx.mlx);
             }
         }
-    next_step(&mlx, direction);
+    next_step(mx, direction);
     *mx = mlx;
     return (1);
 }
