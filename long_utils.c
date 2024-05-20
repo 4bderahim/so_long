@@ -66,7 +66,6 @@ void put_walls(mlx_t *mlx,struct s_long mx)
         }
         i++;
     }
-    
 }
 
 void put_collectibles(char **map, mlx_t *mlx)
@@ -98,24 +97,19 @@ mlx_image_t *put_player(char **map, mlx_t *mlx)
 {
     int i;
     int j;
-    i = 0;
     
-   
+    i = 0;
     while (map[i])
     {
         j = 0;
         while (map[i][j])
         {
             if (map[i][j] == 'P')
-                {
-                    return ((put_the_cat(mlx, j, i)));
-                }
-            
+                return ((put_the_cat(mlx, j, i)));
             j++;
         }
         i++;
     }
-    
     return (NULL);
 }
 
@@ -123,9 +117,9 @@ mlx_image_t *set_game(struct s_long *ml)
 {
     mlx_image_t* img;
     put_walls(ml->mlx, *ml);
-    printf("\t\t[!#]\n");
-    ml->imgg  = put_player(ml->map, ml->mlx);
     put_collectibles(ml->map, ml->mlx);
+    ml->imgg  = put_player(ml->map, ml->mlx);
+    
     put_the_exit(ml->map, ml->mlx);
     
     return (ml->imgg);

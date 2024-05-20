@@ -275,16 +275,50 @@ int check_collect(char **map)
 void next_step(struct s_long *l,int direction)
 {
     struct s_long ll;
+    int x;
+    int y;
+
     ll = *l;
-    printf("%d|%d|\n", ll.cu_x, ll.cu_y) ;
+    
+    
     if (direction == 1)
-        ll.imgg->instances[0].y = ll.cu_y - 65;
-    else if (direction == 3)
-        ll.imgg->instances[0].y = ll.cu_y + 65 ;
-    else if (direction == 2)
-        ll.imgg->instances[0].x = ll.cu_x + 65;
-    else if (direction == 4)
-        ll.imgg->instances[0].x = ll.cu_x - 65;
+        {
+
+            ll.imgg->instances[0].y = ll.cu_y - 65;
+            y = ll.cu_y - 65;
+        }
+
+     if (direction == 3)
+        {
+            ll.imgg->instances[0].y = ll.cu_y + 65 ;
+            y = ll.cu_y + 65;
+        }
+     if (direction == 2)
+        {
+            ll.imgg->instances[0].x = ll.cu_x + 65;
+            x = ll.cu_x + 65;
+        }
+     if (direction == 4)
+        {
+            ll.imgg->instances[0].x = ll.cu_x - 65;
+            x = ll.cu_x - 65;
+        }
+    
+    ll.map[ll.cu_y/65][ll.cu_x/65] = '0';
+    int i,j;
+    i = 0;
+    while (ll.map[i])
+    {
+        j= 0 ;
+        while (ll.map[i][j])
+        {
+            printf("%c", ll.map[i][j]);
+            j++;
+        }
+        printf("\n");
+        i++;
+    }
+    //put_bg(ll.mlx, ll.cu_x, ll.cu_y);
     *l = ll;
 }
 
@@ -293,13 +327,16 @@ int move_the_player(struct s_long *mx, int  direction)
     struct s_long mlx;
     
     int y;
-    int  x;
+    int x;
 
     mlx  = *mx;
-    mx->cu_x = mlx.imgg->instances[0].x;
-    mx->cu_y = mlx.imgg->instances[0].y;
+    
+    mlx.cu_x = mlx.imgg->instances[0].x;
+    mlx.cu_y =  mlx.imgg->instances[0].y;
+    
     y = mlx.imgg->instances[0].y / 65;
     x = mlx.imgg->instances[0].x / 65;
+    
     if (direction == 1 || direction == 3)
     {
         y += 1;
@@ -312,40 +349,100 @@ int move_the_player(struct s_long *mx, int  direction)
         if (direction == 4)
             x -= 2;
     }
-    if(mlx.map[y][x] == 'C')
-    {
-      
-        mlx.map[y][x] = 'P';
-        put_bg(mlx.mlx, x, y);
-        mlx.imgg  = put_player(mlx.map, mlx.mlx);
-    }
+    
     if(mlx.map[y][x] == '1')
-        return (-1);
+        return (0);
+    mlx.prev_char = mlx.map[y][x];
+    mlx.map[y][x] = 'P';
+    if(mlx.prev_char == 'C')
+    {
+        put_bg(mlx.mlx, y, x);
+        //mlx.imgg = set_game(&mlx);  
+    }
+    // else
+    // {
+    //     mlx.map[y][x] = 'P';
+
+    //     mlx.imgg = set_game(&mlx);  
+    // }
     if (mlx.map[y][x] == 'E')
         {
             if (!check_collect(mlx.map))
             {
-                mlx.imgg = set_game(&mlx);
+                //mlx.imgg = set_game(&mlx);
                 change_p(mlx.map);
                 mlx_close_window(mlx.mlx);
             }
         }
-    next_step(mx, direction);
+    
+    
+    next_step(&mlx, direction);
+    // if(mlx.map[y][x] == '1')
+    //     return (0);
+    // mlx.map[y][x] = 'P';
+    // if (mlx.prev_char == 'C')
+    // {
+        
+    //     printf("\t~~!~~~~!~!~!~!~!~!\n");
+    //    // put_bg(mlx.mlx, mlx.cu_y,mlx.cu_x);
+    //     //mlx.imgg = set_game(&mlx);
+    // }
+    
+    // if(mlx.map[y][x] == 'C')
+    // {
+    //    // printf("\t~~!~~~~!~!~!~!~!~!\n");
+    //      put_bg(mlx.mlx, x, y);
+    //     // next_step(&mlx, direction);
+         
+    //     /// mlx.imgg = put_the_cat(mlx.mlx, x, y);
+    // }
+    
+    
+
+    
+    // if (mlx.map[y][x] == 'E')
+    //     {
+    //         if (!check_collect(mlx.map))
+    //         {
+    //             //mlx.imgg = set_game(&mlx);
+    //             change_p(mlx.map);
+    //             mlx_close_window(mlx.mlx);
+    //         }
+    //     }
+    
+    // next_step(&mlx, direction);
+
+    //mlx.prev_char = mlx.map[y][x];
+    
     *mx = mlx;
+    
     return (1);
+
+
 }
 
 void apply_key(struct s_long mx, int direction)
 {
     
     char next_position;
-    mx.map[mx.imgg->instances[0].y/65][mx.imgg->instances[0].x/65] = '0';
-    if (direction == 1 || direction == 3)
-        {  
-            move_the_player(&mx,  direction);
-            return ;
+    
+    // if (direction == 1 || direction == 3)
+    //     {  
+    //         move_the_player(&mx,  direction);
+    //         put_exit(mx.mlx, mx.cu_x, mx.cu_y);
+    //         //put_bg(mx.mlx, mx.cu_x, mx.cu_y);
+            
+    //         return ;
+    //     }
+     //mx.map[mx.imgg->instances[0].y/65][mx.imgg->instances[0].x/65] = '0';
+    if (move_the_player(&mx, direction) != 0)
+        {
+            
+             mx.imgg = set_game(&mx);
+          //  put_exit(mx.mlx, mx.cu_x, mx.cu_y);
+           // put_bg(mx.mlx, mx.cu_x, mx.cu_y);
         }
-    move_the_player(&mx, direction);
+    
     
 }
 static void ft_hook(mlx_key_data_t keydata, void * param)
@@ -373,7 +470,7 @@ static void ft_hook(mlx_key_data_t keydata, void * param)
     {
         apply_key(mx, 3);
     }
-    usleep(1000);
+    
 }
 
 int main()

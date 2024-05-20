@@ -14,6 +14,7 @@ struct s_long
     mlx_image_t* imgg;
     int32_t cu_y;
     int32_t cu_x;
+    char prev_char;
 };
 int ft_strlen(char const *s);
 int check_map(char **map);
@@ -22,4 +23,5 @@ mlx_image_t *put_the_cat(mlx_t *mlx, int j, int i);
 void put_bg( mlx_t *mlx, int j, int i);
 void put_exit( mlx_t *mlx, int j, int i);
 mlx_image_t *put_player(char **map, mlx_t *mlx);
+void put_walls(mlx_t *mlx,struct s_long mx);
 #endif
