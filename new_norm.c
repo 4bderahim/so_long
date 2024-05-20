@@ -280,37 +280,29 @@ int check_collect(char **map)
 void next_step(struct s_long *l,int direction)
 {
     struct s_long ll;
-    int x;
-    int y;
+    int32_t x;
+    int32_t y;
 
     ll = *l;
     
-    
     if (direction == 1)
-        {
+        ll.imgg->instances[0].y = ll.cu_y - 65;
+    if (direction == 1)
+        y = ll.cu_y - 65;
+    if (direction == 3)
+        ll.imgg->instances[0].y = ll.cu_y + 65 ;
+    if (direction == 3)
+        y = ll.cu_y + 65;
+    if (direction == 2)
+        ll.imgg->instances[0].x = ll.cu_x + 65;
+    if (direction == 2)
+        x = ll.cu_x + 65;
+    if (direction == 4)
+        ll.imgg->instances[0].x = ll.cu_x - 65;
+    if (direction == 4)
+        x = ll.cu_x - 65;
 
-            ll.imgg->instances[0].y = ll.cu_y - 65;
-            y = ll.cu_y - 65;
-        }
-
-     if (direction == 3)
-        {
-            ll.imgg->instances[0].y = ll.cu_y + 65 ;
-            y = ll.cu_y + 65;
-        }
-     if (direction == 2)
-        {
-            ll.imgg->instances[0].x = ll.cu_x + 65;
-            x = ll.cu_x + 65;
-        }
-     if (direction == 4)
-        {
-            ll.imgg->instances[0].x = ll.cu_x - 65;
-            x = ll.cu_x - 65;
-        }
-    
-    ll.map[ll.cu_y/65][ll.cu_x/65] = '0';
-    int i,j;
+        int i,j;
     i = 0;
     while (ll.map[i])
     {
@@ -323,9 +315,24 @@ void next_step(struct s_long *l,int direction)
         printf("\n");
         i++;
     }
+    ll.map[ll.cu_y/65][ll.cu_x/65] = '0';
     put_bg(ll.mlx, ll.cu_x/65, ll.cu_y/65);
     *l = ll;
 }
+
+// int i,j;
+//     i = 0;
+//     while (ll.map[i])
+//     {
+//         j= 0 ;
+//         while (ll.map[i][j])
+//         {
+//             printf("%c", ll.map[i][j]);
+//             j++;
+//         }
+//         printf("\n");
+//         i++;
+//     }
 
 int32_t get_x_y(mlx_image_t *img_ins,int direction,  char order)
 {

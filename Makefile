@@ -17,7 +17,7 @@ libmlx:
 	@$(CC)  $(CFLAGS) -o $@ -c $< $(HEADERS) && printf "Compiling: $(notdir $<)"
 
 $(NAME): $(OBJS)
-	@$(CC) -fsanitize=address -g $(OBJS) $(MLX_FLAGS) $(LIBS) $(HEADERS) -o $(NAME)
+	@$(CC) $(OBJS) $(MLX_FLAGS) $(LIBS) $(HEADERS) -o $(NAME)
 
 clean:
 	@rm -rf $(OBJS)
