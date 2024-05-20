@@ -318,7 +318,7 @@ void next_step(struct s_long *l,int direction)
         printf("\n");
         i++;
     }
-    //put_bg(ll.mlx, ll.cu_x, ll.cu_y);
+    put_bg(ll.mlx, ll.cu_x/65, ll.cu_y/65);
     *l = ll;
 }
 
@@ -339,32 +339,31 @@ int move_the_player(struct s_long *mx, int  direction)
     
     if (direction == 1 || direction == 3)
     {
-        y += 1;
+        if (direction == 3)
+            y += 1;
         if (direction == 1)
-            y -= 2;
+            y -= 1;
     }
     else
     {
-        x += 1;
+        if (direction == 2)
+            x += 1;
         if (direction == 4)
-            x -= 2;
+            x -= 1;
     }
-    
+    printf("\t-->%d||%d\n", x, y);
     if(mlx.map[y][x] == '1')
         return (0);
     mlx.prev_char = mlx.map[y][x];
+    //mlx.map[mlx.cu_y/65][mlx.cu_x/65] = '0';
     mlx.map[y][x] = 'P';
     if(mlx.prev_char == 'C')
     {
-        put_bg(mlx.mlx, y, x);
-        //mlx.imgg = set_game(&mlx);  
+        printf("|!|||!!!|!|!|\n");
+        put_bg(mlx.mlx, x, y);
+         //put_the_cat(mlx.mlx, x, y);  
     }
-    // else
-    // {
-    //     mlx.map[y][x] = 'P';
-
-    //     mlx.imgg = set_game(&mlx);  
-    // }
+    
     if (mlx.map[y][x] == 'E')
         {
             if (!check_collect(mlx.map))
@@ -375,47 +374,10 @@ int move_the_player(struct s_long *mx, int  direction)
             }
         }
     
-    
     next_step(&mlx, direction);
-    // if(mlx.map[y][x] == '1')
-    //     return (0);
-    // mlx.map[y][x] = 'P';
-    // if (mlx.prev_char == 'C')
-    // {
-        
-    //     printf("\t~~!~~~~!~!~!~!~!~!\n");
-    //    // put_bg(mlx.mlx, mlx.cu_y,mlx.cu_x);
-    //     //mlx.imgg = set_game(&mlx);
-    // }
-    
-    // if(mlx.map[y][x] == 'C')
-    // {
-    //    // printf("\t~~!~~~~!~!~!~!~!~!\n");
-    //      put_bg(mlx.mlx, x, y);
-    //     // next_step(&mlx, direction);
-         
-    //     /// mlx.imgg = put_the_cat(mlx.mlx, x, y);
-    // }
-    
-    
-
-    
-    // if (mlx.map[y][x] == 'E')
-    //     {
-    //         if (!check_collect(mlx.map))
-    //         {
-    //             //mlx.imgg = set_game(&mlx);
-    //             change_p(mlx.map);
-    //             mlx_close_window(mlx.mlx);
-    //         }
-    //     }
-    
-    // next_step(&mlx, direction);
-
-    //mlx.prev_char = mlx.map[y][x];
-    
+    mlx.imgg = put_the_cat(mlx.mlx, x, y);
+    //put_bg(mlx.mlx, mlx.cu_x, mlx.cu_y);
     *mx = mlx;
-    
     return (1);
 
 
@@ -438,7 +400,7 @@ void apply_key(struct s_long mx, int direction)
     if (move_the_player(&mx, direction) != 0)
         {
             
-             mx.imgg = set_game(&mx);
+            // mx.imgg = set_game(&mx);
           //  put_exit(mx.mlx, mx.cu_x, mx.cu_y);
            // put_bg(mx.mlx, mx.cu_x, mx.cu_y);
         }
@@ -455,6 +417,7 @@ static void ft_hook(mlx_key_data_t keydata, void * param)
 		{
             
             mlx_close_window(mx.mlx);
+            
         }
 	else if (mlx_is_key_down(mx.mlx, MLX_KEY_UP))
 		{
