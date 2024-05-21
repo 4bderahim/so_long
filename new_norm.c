@@ -388,9 +388,7 @@ int move_the_player(struct s_long *mx, int  direction)
 static void ft_hook(mlx_key_data_t keydata, void * param)
 {
     struct s_long mx;
-    
     mx = *(struct s_long*)param;
-    
     if (mlx_is_key_down(mx.mlx, MLX_KEY_ESCAPE))
         mlx_close_window(mx.mlx);   
 	else if (mlx_is_key_down(mx.mlx, MLX_KEY_UP))

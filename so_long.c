@@ -284,32 +284,18 @@ void next_step(struct s_long *l,int direction)
     int y;
 
     ll = *l;
-    
-    
     if (direction == 1)
-        {
-
-            ll.imgg->instances[0].y = ll.cu_y - 65;
-            y = ll.cu_y - 65;
-        }
-
+        ll.imgg->instances[0].y = ll.cu_y - 65;
      if (direction == 3)
-        {
-            ll.imgg->instances[0].y = ll.cu_y + 65 ;
-            y = ll.cu_y + 65;
-        }
+        ll.imgg->instances[0].y = ll.cu_y + 65 ;
      if (direction == 2)
-        {
-            ll.imgg->instances[0].x = ll.cu_x + 65;
-            x = ll.cu_x + 65;
-        }
+        ll.imgg->instances[0].x = ll.cu_x + 65;
      if (direction == 4)
-        {
-            ll.imgg->instances[0].x = ll.cu_x - 65;
-            x = ll.cu_x - 65;
-        }
-    
-    ll.map[ll.cu_y/65][ll.cu_x/65] = '0';
+        ll.imgg->instances[0].x = ll.cu_x - 65;
+    if (ll.map[ll.cu_y/65][ll.cu_x/65] == 'E')
+        ll.map[ll.cu_y/65][ll.cu_x/65] = 'E';
+    else
+        ll.map[ll.cu_y/65][ll.cu_x/65] = '0';
     int i,j;
     i = 0;
     while (ll.map[i])
@@ -323,7 +309,8 @@ void next_step(struct s_long *l,int direction)
         printf("\n");
         i++;
     }
-    put_bg(ll.mlx, ll.cu_x/65, ll.cu_y/65);
+    if (ll.map[ll.cu_y/65][ll.cu_x/65] != 'E')
+        put_bg(ll.mlx, ll.cu_x/65, ll.cu_y/65);
     *l = ll;
 }
 
@@ -351,41 +338,42 @@ int32_t get_x_y(mlx_image_t *img_ins,int direction,  char order)
         return (y);
     return (x);
 } 
-int move_the_player(struct s_long *mx, int  direction)
+void move_the_player(struct s_long *mx, int  direction)
 {
     struct s_long mlx;
     int32_t y;
     int32_t x;
 
-    mlx  = *mx;
+    mlx = *mx;
     mlx.cu_x = mlx.imgg->instances[0].x;
-    mlx.cu_y =  mlx.imgg->instances[0].y;
+    mlx.cu_y = mlx.imgg->instances[0].y;
     y = get_x_y(mlx.imgg, direction, 'y');
     x = get_x_y(mlx.imgg, direction, 'x');
     if(mlx.map[y][x] == '1')
-        return (0);
-    mlx.prev_char = mlx.map[y][x];
-    mlx.map[y][x] = 'P';
-    if(mlx.prev_char == 'C')
+        return ;
+    if(mlx.map[y][x] == 'C')
         put_bg(mlx.mlx, x, y);
-    if (mlx.prev_char == 'E')
+    if (mlx.map[y][x] == 'E')
         {
             if (!check_collect(mlx.map))
                 mlx_close_window(mlx.mlx);
+            mlx.map[y][x] = 'E';
         }
+    else
+        mlx.map[y][x] = 'P';
     next_step(&mlx, direction);
-    mlx.imgg = put_the_cat(mlx.mlx, x, y);
+    if (mlx.map[y][x] != 'E')
+        mlx.imgg = put_the_cat(mlx.mlx, x, y);
     *mx = mlx;
-    return (1);
 }
 static void ft_hook(mlx_key_data_t keydata, void * param)
 {
     struct s_long mx;
     
     mx = *(struct s_long*)param;
-    
+
     if (mlx_is_key_down(mx.mlx, MLX_KEY_ESCAPE))
-        mlx_close_window(mx.mlx);   
+        mlx_close_window(mx.mlx);
 	else if (mlx_is_key_down(mx.mlx, MLX_KEY_UP))
 		move_the_player(&mx, 1);
     else if (mlx_is_key_down(mx.mlx, MLX_KEY_RIGHT))
@@ -394,7 +382,6 @@ static void ft_hook(mlx_key_data_t keydata, void * param)
         move_the_player(&mx, 4);
 	else if (mlx_is_key_down(mx.mlx, MLX_KEY_DOWN))
         move_the_player(&mx, 3);
-    
 }
 
 int main()
