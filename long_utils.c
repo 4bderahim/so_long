@@ -24,15 +24,8 @@ mlx_image_t *put_the_exit(char **map, mlx_t *mlx)
         j = 0;
         while (map[i][j])
         {
-            // if (map[i][j] == 'E')
-            // {
-            //     put_the_dog(mlx, j, i);
-            // }
             if (map[i][j] == 'E')
-                {
-                    put_exit(mlx, j, i);
-                }
-            
+                put_exit(mlx, j, i);   
             j++;
         }
         i++;

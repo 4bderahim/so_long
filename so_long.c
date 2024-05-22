@@ -180,7 +180,12 @@ void put_exit( mlx_t *mlx, int j, int i)
 
 mlx_image_t *put_the_cat(mlx_t *mlx, int j, int i)
 {
-    mlx_texture_t* texture = mlx_load_png("./pngs/caat.png");
+    mlx_texture_t* texture = mlx_load_png("./pngs/csaat.png");
+    if (!texture)
+        {
+            write(1, "[-] Error\n", 10);
+            exit(0);
+        }
     mlx_image_t* img = mlx_texture_to_image(mlx, texture);
     if (!img)
         {
@@ -188,6 +193,7 @@ mlx_image_t *put_the_cat(mlx_t *mlx, int j, int i)
             return (NULL);
         }
     mlx_image_to_window(mlx,img, j*65, i*65);
+    mlx_delete_texture(texture);
     return (img);
 }
 
