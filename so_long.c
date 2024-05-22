@@ -171,10 +171,10 @@ void put_exit( mlx_t *mlx, int j, int i)
 {
     mlx_texture_t* texture = mlx_load_png("./pngs/exit_door.png");
     if (!texture)
-        game_error();
+        game_error(0);
     mlx_image_t* img = mlx_texture_to_image(mlx, texture);
     if (!img)   
-        game_error();
+        game_error(0);
     mlx_delete_texture(texture);
     mlx_image_to_window(mlx, img, j*65, i*65);    
 }
@@ -183,10 +183,10 @@ mlx_image_t *put_the_cat(mlx_t *mlx, int j, int i)
 {
     mlx_texture_t* texture = mlx_load_png("./pngs/caat.png");
     if (!texture)
-        game_error();
+        game_error(0);
     mlx_image_t* img = mlx_texture_to_image(mlx, texture);
     if (!img)
-        game_error();
+        game_error(0);
     mlx_image_to_window(mlx,img, j*65, i*65);
     mlx_delete_texture(texture);
     return (img);
@@ -407,7 +407,7 @@ int main()
         }
 	mlx_t* mlx = mlx_init(get_height_width(map, 0)*65, get_height_width(map, 1)*65, "a title", false);
     if (!mlx)
-		game_error();
+		game_error(0);
     struct s_long ml;
     ml.map = map;
     ml.mlx = mlx;

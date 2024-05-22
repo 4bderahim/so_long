@@ -5,15 +5,12 @@ void put_bg( mlx_t *mlx, int j, int i)
 {
     mlx_texture_t* texture = mlx_load_png("./pngs/back_grround.png");
     if (!texture)
-        game_error();
+        game_error(0);
     mlx_image_t* img = mlx_texture_to_image(mlx, texture);
     if (!img)
-        game_error();
+        game_error(0);
     mlx_delete_texture(texture);
-    if (mlx_image_to_window(mlx, img, j*65, i*65) == -1) 
-    {
-        printf("[-] Error!\n");
-    }
+    mlx_image_to_window(mlx, img, j*65, i*65);
 }
 
 mlx_image_t *put_the_exit(char **map, mlx_t *mlx)
@@ -40,6 +37,7 @@ void put_error_msg(const char* error_msg)
 {
     int i;
     i = 0;
+    
     write(1, "[-] Error : ", 12);
     while (error_msg[i])
     {
@@ -47,9 +45,13 @@ void put_error_msg(const char* error_msg)
         i++;
     }
 }
-void game_error()
+void game_error(int err_flag)
 {
-    put_error_msg(mlx_strerror(mlx_errno));
+    const char* msg;
+    msg = mlx_strerror(mlx_errno);
+    if (err_flag)
+        msg = "Invalid map";
+    put_error_msg(msg);
 	exit(EXIT_FAILURE);
 }
 
@@ -63,10 +65,10 @@ void put_walls(mlx_t *mlx,struct s_long mx)
     mlx_texture_t* texture;
     texture = mlx_load_png("./pngs/box.png");
     if (!texture)
-        game_error();
+        game_error(0);
     img = mlx_texture_to_image(mlx, texture); 
     if (!img)
-        game_error();
+        game_error(0);
     mlx_delete_texture(texture);
     while (mx.map[i])
     {
@@ -91,7 +93,11 @@ void put_collectibles(char **map, mlx_t *mlx)
     i = 0;
     
     mlx_texture_t* texture = mlx_load_png("./pngs/fish.png");
+    if (!texture)
+        game_error(0);
     mlx_image_t* img = mlx_texture_to_image(mlx, texture);
+    if (!img)
+        game_error(0);
     mlx_delete_texture(texture);
     while (map[i])
     {

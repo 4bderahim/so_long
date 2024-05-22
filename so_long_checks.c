@@ -85,8 +85,7 @@ int check_map(char **map)
     i = 0;
     if (!check_map_bricks(map) || !borders_check(map))
         {
-            //free(map);
-            printf("[-] %s",strerror(errno));
+            game_error(1);
             exit(0);
         }
     return (0);

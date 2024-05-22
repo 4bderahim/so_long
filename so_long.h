@@ -25,5 +25,5 @@ void put_bg( mlx_t *mlx, int j, int i);
 void put_exit( mlx_t *mlx, int j, int i);
 mlx_image_t *put_player(char **map, mlx_t *mlx);
 void put_walls(mlx_t *mlx,struct s_long mx);
-void game_error();
+void game_error(int err_flag);
 #endif
