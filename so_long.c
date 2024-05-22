@@ -165,17 +165,16 @@ char **mapper(int fd)
     free(map_full_road);
     return(spilited_map);
 }
-static void ft_error(void)
-{
-	fprintf(stderr, "%s", mlx_strerror(mlx_errno));
-	exit(EXIT_FAILURE);
-}
+
 
 void put_exit( mlx_t *mlx, int j, int i)
 {
     mlx_texture_t* texture = mlx_load_png("./pngs/exit_door.png");
-    
+    if (!texture)
+        game_error();
     mlx_image_t* img = mlx_texture_to_image(mlx, texture);
+    if (!img)   
+        game_error();
     mlx_delete_texture(texture);
     mlx_image_to_window(mlx, img, j*65, i*65);    
 }
@@ -184,16 +183,10 @@ mlx_image_t *put_the_cat(mlx_t *mlx, int j, int i)
 {
     mlx_texture_t* texture = mlx_load_png("./pngs/caat.png");
     if (!texture)
-        {
-            write(1, "[-] Error\n", 10);
-            exit(0);
-        }
+        game_error();
     mlx_image_t* img = mlx_texture_to_image(mlx, texture);
     if (!img)
-        {
-            write(1, "[-] Error\n", 10);
-            return (NULL);
-        }
+        game_error();
     mlx_image_to_window(mlx,img, j*65, i*65);
     mlx_delete_texture(texture);
     return (img);

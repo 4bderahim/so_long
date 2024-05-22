@@ -174,19 +174,22 @@ static void ft_error(void)
 void put_exit( mlx_t *mlx, int j, int i)
 {
     mlx_texture_t* texture = mlx_load_png("./pngs/exit_door.png");
+    if (!texture)
+        game_error();
     mlx_image_t* img = mlx_texture_to_image(mlx, texture);
+    if (!img)   
+        game_error();
     mlx_image_to_window(mlx, img, j*65, i*65);    
 }
 
 mlx_image_t *put_the_cat(mlx_t *mlx, int j, int i)
 {
     mlx_texture_t* texture = mlx_load_png("./pngs/caat.png");
+    if (!texture)
+        game_error();
     mlx_image_t* img = mlx_texture_to_image(mlx, texture);
     if (!img)
-        {
-            write(1, "[-] Error\n", 10);
-            return (NULL);
-        }
+        game_error();
     mlx_image_to_window(mlx,img, j*65, i*65);
     return (img);
 }

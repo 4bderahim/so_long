@@ -1,11 +1,14 @@
 #include "so_long.h"
 
 
-
 void put_bg( mlx_t *mlx, int j, int i)
 {
     mlx_texture_t* texture = mlx_load_png("./pngs/back_grround.png");
+    if (!texture)
+        game_error();
     mlx_image_t* img = mlx_texture_to_image(mlx, texture);
+    if (!img)
+        game_error();
     mlx_delete_texture(texture);
     if (mlx_image_to_window(mlx, img, j*65, i*65) == -1) 
     {
@@ -61,10 +64,10 @@ void put_walls(mlx_t *mlx,struct s_long mx)
     texture = mlx_load_png("./pngs/box.png");
     if (!texture)
         game_error();
-    img = mlx_texture_to_image(mlx, texture);
-    mlx_delete_texture(texture);
+    img = mlx_texture_to_image(mlx, texture); 
     if (!img)
         game_error();
+    mlx_delete_texture(texture);
     while (mx.map[i])
     {
         j = 0;
