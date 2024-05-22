@@ -174,13 +174,14 @@ static void ft_error(void)
 void put_exit( mlx_t *mlx, int j, int i)
 {
     mlx_texture_t* texture = mlx_load_png("./pngs/exit_door.png");
+    
     mlx_image_t* img = mlx_texture_to_image(mlx, texture);
     mlx_image_to_window(mlx, img, j*65, i*65);    
 }
 
 mlx_image_t *put_the_cat(mlx_t *mlx, int j, int i)
 {
-    mlx_texture_t* texture = mlx_load_png("./pngs/csaat.png");
+    mlx_texture_t* texture = mlx_load_png("./pngs/caat.png");
     if (!texture)
         {
             write(1, "[-] Error\n", 10);
@@ -390,47 +391,51 @@ static void ft_hook(mlx_key_data_t keydata, void * param)
         move_the_player(&mx, 3);
 }
 
+void check_leaks()
+{
+    system("leaks -q Game");
+}
+
 int main()
 {
     int fd;
     char **map;
     
-   
     fd = open("map.ber", O_RDONLY);
     if (!fd)
         return (0);
     map = mapper(fd);
-    
+    if (!map)
+        return (0);
     check_map(map);
-    
     fd = 0;
     while (map[fd])
         {
             printf("%s\n", map[fd]);
             fd++;
         }
-    if (!map)
-        return (0);
-    
-    //mlx_set_setting(MLX_MAXIMIZED, true);
 	mlx_t* mlx = mlx_init(get_height_width(map, 0)*65, get_height_width(map, 1)*65, "a title", false);
     if (!mlx)
-		ft_error();
+		game_error();
     struct s_long ml;
     ml.map = map;
     ml.mlx = mlx;
-    printf("\t\t[#]\n");
     ml.imgg = set_game(&ml);
-    printf("\t\t[#]\n");
-    mlx_key_hook(mlx, ft_hook, &ml);
-    
-   // mlx_loop_hook(mlx, my_keyhook, &mlx);
-	mlx_loop(mlx);
-    
-	mlx_terminate(mlx);
-	return (EXIT_SUCCESS);
-    
-    // system("leaks -q a.out");
-    // return (0);
 
+    mlx_key_hook(mlx, ft_hook, &ml);
+    mlx_loop(mlx);
+    mlx_terminate(mlx);
+	// return (EXIT_SUCCESS);
+    mlx_delete_image(ml.mlx, ml.imgg);
+    int i;
+    i = 0;
+    while (ml.map[i])
+    {
+        free(ml.map[i]);
+        i++;
+    }
+    free(ml.map);
+    system("leaks -q a.out");
+    atexit(check_leaks);
+    // return (0);
 }

@@ -32,19 +32,37 @@ mlx_image_t *put_the_exit(char **map, mlx_t *mlx)
     }
     return (NULL);
 }
+void put_error_msg(const char* error_msg)
+{
+    int i;
+    i = 0;
+    write(1, "[-] Error : ", 12);
+    while (error_msg[i])
+    {
+        write(2, &error_msg[i], 1);
+        i++;
+    }
+}
+void game_error()
+{
+    put_error_msg(mlx_strerror(mlx_errno));
+	exit(EXIT_FAILURE);
+}
+
+
 void put_walls(mlx_t *mlx,struct s_long mx)
 {
     int i;
     int j;
     i = 0;
     mlx_image_t* img;
-    if (mlx == NULL )
-        printf("@+@+\n\n\n\n");
-    mlx_texture_t* texture = mlx_load_png("./pngs/box.png");
-    printf("#->\n\n\n");
+    mlx_texture_t* texture;
+    texture = mlx_load_png("./pngs/box.png");
+    if (!texture)
+        game_error();
     img = mlx_texture_to_image(mlx, texture);
-        
-
+    if (!img)
+        game_error();
     while (mx.map[i])
     {
         j = 0;
@@ -84,7 +102,6 @@ void put_collectibles(char **map, mlx_t *mlx)
         i++;
     }
 }
-
 
 mlx_image_t *put_player(char **map, mlx_t *mlx)
 {

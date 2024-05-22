@@ -5,17 +5,18 @@ int borders_check(char **map)
     int i;
     int j;
 
-    j = 0;
     i = 0;
-
     while (map[i])
     {
-        if (i == 0 || map[i+1] == NULL)
+        j = 0 ;
+        if (i == 0 || map[i+1] == NULL )
             {
                 while (map[i][j])
                 {
                     if (map[i][j] != '1')
-                        return (0);
+                        {
+                            return (0);
+                        }
                     j++;
                 }
             }
@@ -25,6 +26,7 @@ int borders_check(char **map)
                 return (0);
         }
         i++;
+   
     }
     return (1);
 }
@@ -44,6 +46,7 @@ int a_map_brick(char c)
                     return (1);
                 i++;
             }
+            
         return (0);
 }
 int check_map_bricks(char **map)
@@ -53,10 +56,10 @@ int check_map_bricks(char **map)
     int p_found;
     
     p_found = 0;
-    i = -1;
-    while (map[i++])
+    i = 0;
+    while (map[i])
     {
-        j = 0;  
+        j = 0;
         if (ft_strlen(map[i]) != ft_strlen(map[0]))
             return (0);
         while (map[i][j])
@@ -71,13 +74,21 @@ int check_map_bricks(char **map)
                 return (0);
             j++;
         }
+        i++;
     }
     return (1);
 }
+
 int check_map(char **map)
 {
-    if (!borders_check(map) )
-        exit(0);
+    int i;
+    i = 0;
+    if (!check_map_bricks(map) || !borders_check(map))
+        {
+            //free(map);
+            printf("[-] %s",strerror(errno));
+            exit(0);
+        }
     return (0);
 }
 
