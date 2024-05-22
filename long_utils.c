@@ -6,6 +6,7 @@ void put_bg( mlx_t *mlx, int j, int i)
 {
     mlx_texture_t* texture = mlx_load_png("./pngs/back_grround.png");
     mlx_image_t* img = mlx_texture_to_image(mlx, texture);
+    mlx_delete_texture(texture);
     if (mlx_image_to_window(mlx, img, j*65, i*65) == -1) 
     {
         printf("[-] Error!\n");
@@ -61,6 +62,7 @@ void put_walls(mlx_t *mlx,struct s_long mx)
     if (!texture)
         game_error();
     img = mlx_texture_to_image(mlx, texture);
+    mlx_delete_texture(texture);
     if (!img)
         game_error();
     while (mx.map[i])
@@ -87,7 +89,7 @@ void put_collectibles(char **map, mlx_t *mlx)
     
     mlx_texture_t* texture = mlx_load_png("./pngs/fish.png");
     mlx_image_t* img = mlx_texture_to_image(mlx, texture);
-    
+    mlx_delete_texture(texture);
     while (map[i])
     {
         j = 0;

@@ -176,6 +176,7 @@ void put_exit( mlx_t *mlx, int j, int i)
     mlx_texture_t* texture = mlx_load_png("./pngs/exit_door.png");
     
     mlx_image_t* img = mlx_texture_to_image(mlx, texture);
+    mlx_delete_texture(texture);
     mlx_image_to_window(mlx, img, j*65, i*65);    
 }
 
@@ -206,9 +207,7 @@ int get_height_width(char **map, int height_or_width_command)
         {
             i = 0;
             while (map[i])
-            {
                 i++;
-            }
             printf("\t%d>\n", i);
             return (i);
         }
@@ -217,7 +216,6 @@ int get_height_width(char **map, int height_or_width_command)
         printf("\t[%d]\n", ft_strlen(map[0]));
         return (ft_strlen(map[0]));
     }
-    
 }
 
 int go_down(mlx_t *mlx, char **map)
