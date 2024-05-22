@@ -33,28 +33,6 @@ mlx_image_t *put_the_exit(char **map, mlx_t *mlx)
     }
     return (NULL);
 }
-void put_error_msg(const char* error_msg)
-{
-    int i;
-    i = 0;
-    
-    write(1, "[-] Error : ", 12);
-    while (error_msg[i])
-    {
-        write(2, &error_msg[i], 1);
-        i++;
-    }
-}
-void game_error(int err_flag)
-{
-    const char* msg;
-    msg = mlx_strerror(mlx_errno);
-    if (err_flag)
-        msg = "Invalid map";
-    put_error_msg(msg);
-	exit(EXIT_FAILURE);
-}
-
 
 void put_walls(mlx_t *mlx,struct s_long mx)
 {

@@ -26,7 +26,6 @@ int borders_check(char **map)
                 return (0);
         }
         i++;
-   
     }
     return (1);
 }

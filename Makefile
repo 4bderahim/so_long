@@ -4,7 +4,7 @@ LIBMLX	:= ~/MLX42
 
 HEADERS	:= -I ./include -I $(LIBMLX)/include
 LIBS	:= $(LIBMLX)/build/libmlx42.a -ldl -lglfw -pthread -lm
-SRCS	:= long_utils.c so_long.c so_long_checks.c
+SRCS	:= put_mlxs_.c map_utiles.c long_utils.c so_long.c so_long_checks.c
 OBJS	:= ${SRCS:.c=.o}
 MLX_FLAGS    = ~/MLX42/build/libmlx42.a ~/MLX42/build/libglfw3.a -Iinclude -lm -framework Cocoa -framework OpenGL -framework IOKit
 
