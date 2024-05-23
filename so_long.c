@@ -87,7 +87,42 @@ void	free_map(struct s_long ml)
 	}
 	free(ml.map);
 }
+int flood_fill(struct s_long st, int y , int x, char c)
+{
+	int height;
+	int width;
 
+	int i, j;
+	i = 0;
+	while (st.map[i])
+	{
+		j = 0;
+		while (st.map[i][j])
+		{
+			printf("%c", st.map[i][j]);
+			j++;
+		}
+		printf("\n");
+		i++;
+	}
+	height = get_height_width(st.map, 1);
+	width = get_height_width(st.map, 0);
+	if (y < 0 || y > height || x > width || x < 0 || st.map[y][x] == c || st.map[y][x] == '1')
+		return (0);
+	if (st.map[y][x] == 'C')
+		return (1);
+	st.map[y][x] = '#';
+	if (flood_fill(st, y+1, x, '#'))
+		return (1);
+	if (flood_fill(st, y-1, x, '#'))
+		return (1);
+	if (flood_fill(st, y, x+1, '#'))
+		return (1);
+	if (flood_fill(st, y+1, x-1, '#'))
+		return (1);
+	return (0);
+	
+}
 int	main(int argc, char **argv)
 {
 	int				fd;
@@ -107,6 +142,8 @@ int	main(int argc, char **argv)
 		return (0);
 	}
 	ml.map = mapper(fd);
+	if (flood_fill(ml, 1, 1, '#') == 1)
+		printf("\n\n\n\tmap is Goodn");
 	check_map(ml.map);
 	mlx = mlx_init(get_height_width(ml.map, 0) * 65, get_height_width(ml.map, 1)
 			* 65, "so long", false);
