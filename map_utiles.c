@@ -1,23 +1,39 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   map_utiles.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ael-krid <ael-krid@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/23 11:44:17 by ael-krid          #+#    #+#             */
+/*   Updated: 2024/05/23 11:44:18 by ael-krid         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "so_long.h"
-int ft_strlen(char const *s)
+
+int	ft_strlen(char const *s)
 {
-    int i ;
-    i = 0;
-    while (s[i])
-        {
-            i++;
-        }
-    return (i);
+	int	i;
+
+	i = 0;
+	while (s[i])
+	{
+		i++;
+	}
+	return (i);
 }
+
 void	*ft_calloc(size_t count, size_t size)
 {
 	char	*all;
 	size_t	tmp;
-    size_t i;
+	size_t	i;
+
 	if (count == 0 || size == 0)
 	{
 		all = (char *)malloc(count * size);
-        all[0] = 0;
+		all[0] = 0;
 		return (all);
 	}
 	tmp = count * size;
@@ -26,12 +42,12 @@ void	*ft_calloc(size_t count, size_t size)
 	all = (char *)malloc(count * size);
 	if (!all)
 		return (NULL);
-    i = 0;
-    while (i < count*size)
-    {
-        all[i] = 0;
-        i++;
-    }
+	i = 0;
+	while (i < count * size)
+	{
+		all[i] = 0;
+		i++;
+	}
 	return (all);
 }
 
@@ -55,7 +71,7 @@ void	join_the_two_strings(char *all, char const *s1, char const *s2)
 	}
 }
 
-char	*ft_strjoin(char  *s1, char  *s2)
+char	*ft_strjoin(char *s1, char *s2)
 {
 	char	*allocated;
 	size_t	string_len;
@@ -68,29 +84,31 @@ char	*ft_strjoin(char  *s1, char  *s2)
 		return (NULL);
 	join_the_two_strings(allocated, s1, s2);
 	allocated[string_len] = '\0';
-    free(s1);
+	free(s1);
 	return (allocated);
 }
-char *map_reader(int fd)
+
+char	*map_reader(int fd)
 {
-    char *sp;
-    char *map;
-    int c;
-    map = (char *) malloc(1);
-    if (!map)
-        return (NULL);
-    map[0] = 0;
-    c = 1;
-    while (c != 0)
-    {
-        sp = (char *) ft_calloc(101,1);
-        if (!sp)
-            return (NULL);
-        c = read(fd, sp, 100);
-        if (c == -1)
-            exit(0);
-        map = ft_strjoin(map, sp);
-        free(sp);
-    }
-    return (map);
+	char	*sp;
+	char	*map;
+	int		c;
+
+	map = (char *)malloc(1);
+	if (!map)
+		return (NULL);
+	map[0] = 0;
+	c = 1;
+	while (c != 0)
+	{
+		sp = (char *)ft_calloc(101, 1);
+		if (!sp)
+			return (NULL);
+		c = read(fd, sp, 100);
+		if (c == -1)
+			exit(0);
+		map = ft_strjoin(map, sp);
+		free(sp);
+	}
+	return (map);
 }

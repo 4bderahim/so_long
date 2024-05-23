@@ -1,12 +1,13 @@
 NAME	:= Game
-CFLAGS	:= -Wunreachable-code -Ofast 
+CFLAGS	:= -Wall -Wextra -Werror
+#-Wunreachable-code -Ofast 
 LIBMLX	:= ~/MLX42
 
 HEADERS	:= -I ./include -I $(LIBMLX)/include
 LIBS	:= $(LIBMLX)/build/libmlx42.a -ldl -lglfw -pthread -lm
-SRCS	:= put_mlxs_.c map_utiles.c long_utils.c so_long.c so_long_checks.c
+SRCS	:= put_mlxs_.c map_utiles.c long_utils.c move_utils.c map_join_utils.c so_long.c so_long_checks.c
 OBJS	:= ${SRCS:.c=.o}
-MLX_FLAGS    = ~/MLX42/build/libmlx42.a ~/MLX42/build/libglfw3.a -Iinclude -lm -framework Cocoa -framework OpenGL -framework IOKit
+#MLX_FLAGS    =  -Iinclude -lm -framework Cocoa -framework OpenGL -framework IOKit
 
 all: libmlx $(NAME)
 
@@ -17,7 +18,7 @@ libmlx:
 	@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS) && printf "Compiling: $(notdir $<)"
 
 $(NAME): $(OBJS)
-	@$(CC) $(OBJS) $(MLX_FLAGS) $(LIBS) $(HEADERS) -o $(NAME)
+	@$(CC) $(OBJS) $(LIBS) $(HEADERS) -o $(NAME)
 
 clean:
 	@rm -rf $(OBJS)
