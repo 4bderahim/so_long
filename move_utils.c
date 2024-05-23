@@ -45,9 +45,7 @@ void	next_step(struct s_long *l, int direction)
 		ll.imgg->instances[0].x = ll.cu_x + 65;
 	if (direction == 4)
 		ll.imgg->instances[0].x = ll.cu_x - 65;
-	if (ll.map[ll.cu_y / 65][ll.cu_x / 65] == 'E')
-		ll.map[ll.cu_y / 65][ll.cu_x / 65] = 'E';
-	else
+	if (ll.map[ll.cu_y / 65][ll.cu_x / 65] != 'E')
 		ll.map[ll.cu_y / 65][ll.cu_x / 65] = '0';
 	int i, j;
 	i = 0;
@@ -62,7 +60,9 @@ void	next_step(struct s_long *l, int direction)
 		printf("\n");
 		i++;
 	}
-	if (ll.map[ll.cu_y / 65][ll.cu_x / 65] != 'E')
+	if (ll.map[ll.cu_y / 65][ll.cu_x / 65] == 'E')
+		put_exit(ll.mlx, ll.cu_x / 65, ll.cu_y / 65);
+	else
 		put_bg(ll.mlx, ll.cu_x / 65, ll.cu_y / 65);
 	*l = ll;
 }
@@ -98,9 +98,7 @@ void	move_the_player(struct s_long *mx, int direction)
 	struct s_long	mlx;
 	int32_t			y;
 	int32_t			x;
-	int				exit_position;
 
-	
 	mlx = *mx;
 	mlx.cu_x = mlx.imgg->instances[0].x;
 	mlx.cu_y = mlx.imgg->instances[0].y;
@@ -114,12 +112,11 @@ void	move_the_player(struct s_long *mx, int direction)
 	{
 		if (!check_collect(mlx.map))
 			mlx_close_window(mlx.mlx);
-		mlx.map[y][x] = 'E';
+		put_exit(mlx.mlx, x, y);
 	}
 	else
 		mlx.map[y][x] = 'P';
 	next_step(&mlx, direction);
-	if (mlx.map[y][x] != 'E')
-		mlx.imgg = put_the_cat(mlx.mlx, x, y);
+	mlx.imgg = put_the_cat(mlx.mlx, x, y);
 	*mx = mlx;
 }

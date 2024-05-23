@@ -12,6 +12,12 @@
 
 #include "so_long.h"
 
+// void putn(int x)
+// {
+// 	if (x > 9)
+// 		putn(x /10)
+// 	write(1, &(x + '0'), 1);
+// }
 void	put_error_msg(const char *error_msg)
 {
 	int	i;

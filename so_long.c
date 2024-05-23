@@ -67,6 +67,7 @@ static void	ft_hook(mlx_key_data_t keydata, void *param)
 		move_the_player(&mx, 4);
 	else if (mlx_is_key_down(mx.mlx, MLX_KEY_DOWN))
 		move_the_player(&mx, 3);
+	
 }
 
 void	check_leaks(void)
