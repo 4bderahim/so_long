@@ -94,8 +94,8 @@ int	main(int argc, char **argv)
 		return (0);
 	}
 	ml = set_struct(argv[1]);
-	flood_fill(ml.map, get_player_position(ml.map, 'y'),
-		get_player_position(ml.map, 'x'), '#', &ml.coins_num, &ml.exit_found);
+	flood_fill(&ml, get_player_position(ml.map, 'y'),
+		get_player_position(ml.map, 'x'), '#');
 	if (ml.coins_num || !ml.exit_found)
 		game_error(1);
 	free_map(ml);

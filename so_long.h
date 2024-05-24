@@ -32,6 +32,8 @@ struct			s_long
 	int			moves;
 	int			coins_num;
 	int			exit_found;
+	int 		p_position_x;
+	int 		p_position_y;
 };
 int				ft_strlen(char const *s);
 int				check_map(char **map);
@@ -45,8 +47,7 @@ void			put_walls(mlx_t *mlx, struct s_long mx);
 void			game_error(int err_flag);
 char			**mapper(int fd);
 char			*map_reader(int fd);
-void			flood_fill(char **map, int y, int x, char c, int *coins_len,
-					int *exit_found);
+void			flood_fill(struct s_long *st, int y, int x, char c);
 int				get_player_position(char **map, char c);
 char			**get_map_from_file(char *file_name);
 struct s_long	set_struct(char *file_name);

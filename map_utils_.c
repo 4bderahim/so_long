@@ -12,29 +12,27 @@
 
 #include "so_long.h"
 
-void	flood_fill(char **map, int y, int x, char c, int *coins_len,
-		int *exit_found)
+void	flood_fill(struct s_long *st, int y, int x, char c)
 {
 	int	height;
 	int	width;
 
-	height = get_height_width(map, 1);
-	width = get_height_width(map, 0);
-	if (map[y][x] == 'C')
-		(*coins_len)--;
-	if (map[y][x] == 'E')
-		(*exit_found)++;
-	if (y == 0 || y >= height || x >= width || x == 0 || map[y][x] == c
-		|| map[y][x] == '1')
+	height = get_height_width(st->map, 1);
+	width = get_height_width(st->map, 0);
+	if (st->map[y][x] == 'C')
+		st->coins_num--;
+	if (st->map[y][x] == 'E')
+		st->exit_found++;
+	if (y == 0 || y >= height || x >= width || x == 0 || st->map[y][x] == c
+		|| st->map[y][x] == '1')
 	{
-		
 		return ;
 	}
-	map[y][x] = '#';
-	flood_fill(map, y + 1, x, '#', coins_len, exit_found);
-	flood_fill(map, y - 1, x, '#', coins_len, exit_found);
-	flood_fill(map, y, x + 1, '#', coins_len, exit_found);
-	flood_fill(map, y, x - 1, '#', coins_len, exit_found);
+	st->map[y][x] = '#';
+	flood_fill(st, y + 1, x, '#');
+	flood_fill(st, y - 1, x, '#');
+	flood_fill(st, y, x + 1, '#');
+	flood_fill(st, y, x - 1, '#');
 }
 int	coins_len(char **map)
 {
