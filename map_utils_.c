@@ -12,36 +12,37 @@
 
 #include "so_long.h"
 
-
-
-void flood_fill(char **map, int y , int x, char c, int *coins_len, int *exit_found)
+void	flood_fill(char **map, int y, int x, char c, int *coins_len,
+		int *exit_found)
 {
-	int height;
-	int width;
-	
+	int	height;
+	int	width;
+
 	height = get_height_width(map, 1);
 	width = get_height_width(map, 0);
 	if (map[y][x] == 'C')
 		(*coins_len)--;
 	if (map[y][x] == 'E')
 		(*exit_found)++;
-	if (y == 0 || y >= height || x >= width || x == 0 || map[y][x] == c || map[y][x] == '1')
-		{
-			//printf("\t\n| Hello world!\n");
-			return ;
-		}
+	if (y == 0 || y >= height || x >= width || x == 0 || map[y][x] == c
+		|| map[y][x] == '1')
+	{
+		
+		return ;
+	}
 	map[y][x] = '#';
-	flood_fill(map, y+1, x, '#', coins_len, exit_found);
-	flood_fill(map, y-1, x, '#', coins_len, exit_found);
-	flood_fill(map, y, x+1, '#', coins_len, exit_found);
-	flood_fill(map, y, x-1, '#', coins_len, exit_found);
+	flood_fill(map, y + 1, x, '#', coins_len, exit_found);
+	flood_fill(map, y - 1, x, '#', coins_len, exit_found);
+	flood_fill(map, y, x + 1, '#', coins_len, exit_found);
+	flood_fill(map, y, x - 1, '#', coins_len, exit_found);
 }
-int coins_len(char **map)
+int	coins_len(char **map)
 {
-	int i;
-	int j;
-	int count;
-	i =0 ;
+	int	i;
+	int	j;
+	int	count;
+
+	i = 0;
 	count = 0;
 	while (map[i])
 	{
@@ -57,15 +58,14 @@ int coins_len(char **map)
 	return (count);
 }
 
-int get_player_position(char **map, char c)
+int	get_player_position(char **map, char c)
 {
-	int x;
-	int y;
+	int	x;
+	int	y;
 
 	y = 0;
 	while (map[y])
 	{
-		
 		x = 0;
 		while (map[y][x])
 		{
@@ -82,9 +82,9 @@ int get_player_position(char **map, char c)
 	}
 	return (0);
 }
-char ** get_map_from_file(char *file_name)
+char	**get_map_from_file(char *file_name)
 {
-	int fd;
+	int	fd;
 
 	fd = open(file_name, O_RDONLY);
 	if (fd == -1)
@@ -94,11 +94,11 @@ char ** get_map_from_file(char *file_name)
 	}
 	return (mapper(fd));
 }
- struct s_long set_struct( char *file_name)
- {
+struct s_long	set_struct(char *file_name)
+{
 	struct s_long sl;
 	sl.map = get_map_from_file(file_name);
 	sl.coins_num = coins_len(sl.map);
 	sl.exit_found = 0;
 	return (sl);
- }
+}

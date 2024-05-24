@@ -110,7 +110,6 @@ int	check_map_bricks(char **map)
 	return (1);
 }
 
-
 int	check_map(char **map)
 {
 	int	i;

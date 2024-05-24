@@ -76,6 +76,5 @@ char	**mapper(int fd)
 		}
 		i++;
 	}
-	free(map_full_road);
-	return (spilited_map);
+	return (free(map_full_road), spilited_map);
 }

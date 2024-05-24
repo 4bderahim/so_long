@@ -63,7 +63,6 @@ static void	ft_hook(mlx_key_data_t keydata, void *param)
 		move_the_player(&mx, 4);
 	else if (mlx_is_key_down(mx.mlx, MLX_KEY_DOWN))
 		move_the_player(&mx, 3);
-	
 }
 
 void	check_leaks(void)
@@ -95,27 +94,15 @@ int	main(int argc, char **argv)
 		return (0);
 	}
 	ml = set_struct(argv[1]);
-	flood_fill(ml.map, get_player_position(ml.map, 'y'), get_player_position(ml.map, 'x'), '#', &ml.coins_num, &ml.exit_found);
+	flood_fill(ml.map, get_player_position(ml.map, 'y'),
+		get_player_position(ml.map, 'x'), '#', &ml.coins_num, &ml.exit_found);
 	if (ml.coins_num || !ml.exit_found)
-	 	game_error(1);
-	int i, j;
-	i = 0;
-	while (ml.map[i])
-	{
-		j = 0;
-		while (ml.map[i][j])
-		{
-			printf("%c", ml.map[i][j]);
-			j++;
-		}
-		printf("\n");
-		i++;
-	}
+		game_error(1);
 	free_map(ml);
 	ml.map = get_map_from_file(argv[1]);
 	check_map(ml.map);
-	ml.mlx = mlx_init(get_height_width(ml.map, 0) * 65, get_height_width(ml.map, 1)
-			* 65, "so long", false);
+	ml.mlx = mlx_init(get_height_width(ml.map, 0) * 65, get_height_width(ml.map,
+				1) * 65, "so long", false);
 	if (!ml.mlx)
 		game_error(0);
 	ml.imgg = set_game(&ml);
@@ -125,6 +112,5 @@ int	main(int argc, char **argv)
 	mlx_delete_image(ml.mlx, ml.imgg);
 	free_map(ml);
 	atexit(check_leaks);
-	//system("leaks -q Game");	
 	return (0);
 }
