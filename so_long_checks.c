@@ -119,7 +119,7 @@ int	check_map(char **map)
 	if (!check_map_bricks(map) || !borders_check(map))
 	{
 		game_error(1);
-		exit(0);
+		exit(1);
 	}
 	return (0);
 }

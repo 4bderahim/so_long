@@ -41,12 +41,10 @@ int	get_height_width(char **map, int height_or_width_command)
 		i = 0;
 		while (map[i])
 			i++;
-		printf("\t%d>\n", i);
 		return (i);
 	}
 	else
 	{
-		printf("\t[%d]\n", ft_strlen(map[0]));
 		return (ft_strlen(map[0]));
 	}
 }
@@ -87,63 +85,123 @@ void	free_map(struct s_long ml)
 	}
 	free(ml.map);
 }
-int flood_fill(struct s_long st, int y , int x, char c)
+void flood_fill(char **map, int y , int x, char c, int *coins_len, int *exit_found)
 {
 	int height;
 	int width;
-
-	int i, j;
-	i = 0;
-	while (st.map[i])
+	
+	height = get_height_width(map, 1);
+	width = get_height_width(map, 0);
+	if (map[y][x] == 'C')
+		(*coins_len)--;
+	if (map[y][x] == 'E')
+		(*exit_found)++;
+	if (y < 0 || y >= height || x >= width || x < 0 || map[y][x] == c || map[y][x] == '1')
+		{
+			//printf("\t\n| Hello world!\n");
+			return ;
+		}
+	map[y][x] = '#';
+	flood_fill(map, y+1, x, '#', coins_len, exit_found);
+	flood_fill(map, y-1, x, '#', coins_len, exit_found);
+	flood_fill(map, y, x+1, '#', coins_len, exit_found);
+	flood_fill(map, y, x-1, '#', coins_len, exit_found);
+}
+int coins_len(char **map)
+{
+	int i;
+	int j;
+	int count;
+	i =0 ;
+	count = 0;
+	while (map[i])
 	{
 		j = 0;
-		while (st.map[i][j])
+		while (map[i][j])
 		{
-			printf("%c", st.map[i][j]);
+			if (map[i][j] == 'C')
+				count++;
 			j++;
 		}
-		printf("\n");
 		i++;
 	}
-	height = get_height_width(st.map, 1);
-	width = get_height_width(st.map, 0);
-	if (y < 0 || y > height || x > width || x < 0 || st.map[y][x] == c || st.map[y][x] == '1')
-		return (0);
-	if (st.map[y][x] == 'C')
-		return (1);
-	st.map[y][x] = '#';
-	if (flood_fill(st, y+1, x, '#'))
-		return (1);
-	if (flood_fill(st, y-1, x, '#'))
-		return (1);
-	if (flood_fill(st, y, x+1, '#'))
-		return (1);
-	if (flood_fill(st, y+1, x-1, '#'))
-		return (1);
-	return (0);
-	
+	return (count);
 }
+
+int get_player_position(char **map, char c)
+{
+	int x;
+	int y;
+
+	y = 0;
+	while (map[y])
+	{
+		
+		x = 0;
+		while (map[y][x])
+		{
+			if (map[y][x] == 'P')
+			{
+				if (c == 'y')
+					return (y);
+				if (c == 'x')
+					return (x);
+			}
+			x++;
+		}
+		y++;
+	}
+	return (0);
+}
+char ** get_map_from_file(char *file_name)
+{
+	int fd;
+
+	fd = open(file_name, O_RDONLY);
+	if (fd == -1)
+	{
+		write(2, "[-] Error : invalid file name!", 30);
+		exit(1);
+	}
+	return (mapper(fd));
+}
+ struct s_long set_struct( char *file_name)
+ {
+	struct s_long sl;
+	sl.map = get_map_from_file(file_name);
+	sl.coins_num = coins_len(sl.map);
+	sl.exit_found = 0;
+	return (sl);
+ }
 int	main(int argc, char **argv)
 {
-	int				fd;
 	struct s_long	ml;
 	mlx_t			*mlx;
-
 	atexit(check_leaks);
 	if (argc != 2)
 	{
 		write(2, "[-] Error : cant find map file!", 31);
 		return (0);
 	}
-	fd = open(argv[1], O_RDONLY);
-	if (fd == -1)
+	ml = set_struct(argv[1]);
+	flood_fill(ml.map, get_player_position(ml.map, 'y'), get_player_position(ml.map, 'x'), '#', &ml.coins_num, &ml.exit_found);
+	if (ml.coins_num || !ml.exit_found)
+	 	game_error(1);
+	free_map(ml);
+	ml.map = get_map_from_file(argv[1]);
+	int i, j;
+	i = 0;
+	while (ml.map[i])
 	{
-		write(2, "[-] Error : invalid file name!", 30);
-		return (0);
+		j = 0;
+		while (ml.map[i][j])
+		{
+			printf("%c", ml.map[i][j]);
+			j++;
+		}
+		printf("\n");
+		i++;
 	}
-	ml.map = mapper(fd);
-	if (flood_fill(ml, 1, 1, '#') == 1)
-		printf("\n\n\n\tmap is Goodn");
 	check_map(ml.map);
 	mlx = mlx_init(get_height_width(ml.map, 0) * 65, get_height_width(ml.map, 1)
 			* 65, "so long", false);

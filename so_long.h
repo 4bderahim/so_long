@@ -30,6 +30,8 @@ struct			s_long
 	int32_t		cu_y;
 	int32_t		cu_x;
 	int 		moves;
+	int			coins_num;
+	int			exit_found;
 };
 int				ft_strlen(char const *s);
 int				check_map(char **map);
