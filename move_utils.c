@@ -80,7 +80,7 @@ int32_t	get_x_y(mlx_image_t *img_ins, int direction, char order)
 	return (x);
 }
 
-void	move_the_player(struct s_long *mx, int direction)
+int	move_the_player(struct s_long *mx, int direction)
 {
 	struct s_long	mlx;
 	int32_t			y;
@@ -92,7 +92,7 @@ void	move_the_player(struct s_long *mx, int direction)
 	y = get_x_y(mlx.imgg, direction, 'y');
 	x = get_x_y(mlx.imgg, direction, 'x');
 	if (mlx.map[y][x] == '1')
-		return ;
+		return 0;
 	if (mlx.map[y][x] == 'C')
 		put_bg(mlx.mlx, x, y);
 	if (mlx.map[y][x] == 'E')
@@ -106,4 +106,5 @@ void	move_the_player(struct s_long *mx, int direction)
 	next_step(&mlx, direction);
 	mlx.imgg = put_the_cat(mlx.mlx, x, y);
 	*mx = mlx;
+	return (1);
 }

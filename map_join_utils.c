@@ -48,6 +48,8 @@ void	join_to_map(char **sp, char *s, int ii, int index)
 	s = s + ii;
 	while (s[i] != '\0' && s[i] != '\n')
 		i++;
+	if (i < 2)
+		game_error(1);
 	sp[index] = (char *)malloc(i + 1);
 	if (!sp[index])
 		return ;
@@ -59,7 +61,21 @@ void	join_to_map(char **sp, char *s, int ii, int index)
 		i++;
 	}
 }
-
+#include <stdio.h>
+// int check_check(char *s)
+// {
+// 	int i;
+// 	i = 0;
+// 	while (s[i])
+// 	{
+// 		if (s[i] == '\n' && s[i+1] == '\n')
+// 			{
+// 				game_error(1);
+// 			}
+// 		i++;
+// 	}
+// 	return (1);
+// }
 char	**mapper(int fd)
 {
 	char	*map_full_road;
@@ -70,8 +86,12 @@ char	**mapper(int fd)
 	index = 0;
 	i = 0;
 	map_full_road = map_reader(fd);
+	
 	if (!map_full_road)
-		game_error(1);
+		{
+			
+			game_error(1);
+		}
 	spilited_map = (char **)malloc(sizeof(char *)
 			* (count_map_hpaths(map_full_road) + 1));
 	if (!spilited_map)

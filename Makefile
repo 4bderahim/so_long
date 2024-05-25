@@ -21,7 +21,7 @@ $(NAME): $(OBJS)
 	
 %.o: %.c so_long.h
 	@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS) && printf "Compiling: $(notdir $<)"
-	
+
 clean:
 	@rm -rf $(OBJS)
 	@rm -rf $(LIBMLX)/build

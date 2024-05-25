@@ -81,12 +81,25 @@ int	get_player_position(char **map, char c)
 	}
 	return (0);
 }
-
+#include <stdio.h>
+int check_file_name(char *file_name)
+{
+	//int i;
+	int size = ft_strlen(file_name);
+	if (size < 5)
+		return(0);
+	size--;
+	if (file_name[size] == 'r' || file_name[size-1] == 'e' || file_name[size-2] == 'b' || file_name[size-3] == '.')
+		return (1);
+	return (0);
+}
 char	**get_map_from_file(char *file_name)
 {
 	int	fd;
 
-	fd = open(file_name, O_RDONLY);
+	fd = -1;
+	if (check_file_name(file_name))
+		fd = open(file_name, O_RDONLY);
 	if (fd == -1)
 	{
 		write(2, "Error\n[-] invalid file name!", 28);
@@ -99,6 +112,7 @@ struct s_long	set_struct(char *file_name)
 {
 	struct s_long	sl;
 
+	
 	sl.map = get_map_from_file(file_name);
 	sl.coins_num = coins_len(sl.map);
 	if (!sl.coins_num)

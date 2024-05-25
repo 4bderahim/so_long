@@ -81,7 +81,7 @@ int	check_exit(char **map)
 	}
 	return (1);
 }
-
+#include <stdio.h>
 int	check_map_bricks(char **map)
 {
 	int	i;
@@ -90,14 +90,13 @@ int	check_map_bricks(char **map)
 
 	p_found = 0;
 	i = 0;
+	
 	while (map[i])
 	{
 		j = 0;
+		
 		if (ft_strlen(map[i]) != ft_strlen(map[0]))
-			{
-				write(1, "hello", 5);
-				return (0);
-			}
+			return (0);
 		while (map[i][j])
 		{
 			if ((map[i][j] == 'P' && p_found) || !check_exit(map))
