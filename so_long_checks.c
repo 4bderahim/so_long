@@ -94,7 +94,10 @@ int	check_map_bricks(char **map)
 	{
 		j = 0;
 		if (ft_strlen(map[i]) != ft_strlen(map[0]))
-			return (0);
+			{
+				write(1, "hello", 5);
+				return (0);
+			}
 		while (map[i][j])
 		{
 			if ((map[i][j] == 'P' && p_found) || !check_exit(map))

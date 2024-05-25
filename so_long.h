@@ -10,17 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <fcntl.h>
-#include <stdbool.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-//#include "MLX42.h"
-#include <MLX42/MLX42.h>
-#include <errno.h>
-#include <string.h>
-#ifndef SO_LONG
-# define SO_LONG
+#ifndef SO_LONG_H
+# define SO_LONG_H
+# include </Users/ael-krid/MLX42/include/MLX42/MLX42.h>
+# include <fcntl.h>
+# include <stdlib.h>
+# include <unistd.h>
 
 struct			s_long
 {
@@ -29,14 +24,13 @@ struct			s_long
 	mlx_image_t	*imgg;
 	int32_t		cu_y;
 	int32_t		cu_x;
-	int			moves;
 	int			coins_num;
 	int			exit_found;
-	int 		p_position_x;
-	int 		p_position_y;
+	int			moves;
 };
 int				ft_strlen(char const *s);
 int				check_map(char **map);
+void			putnbr(int x);
 void			move_the_player(struct s_long *mx, int direction);
 mlx_image_t		*set_game(struct s_long *ml);
 mlx_image_t		*put_the_cat(mlx_t *mlx, int j, int i);

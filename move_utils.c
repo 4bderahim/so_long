@@ -47,19 +47,6 @@ void	next_step(struct s_long *l, int direction)
 		ll.imgg->instances[0].x = ll.cu_x - 65;
 	if (ll.map[ll.cu_y / 65][ll.cu_x / 65] != 'E')
 		ll.map[ll.cu_y / 65][ll.cu_x / 65] = '0';
-	int i, j;
-	i = 0;
-	while (ll.map[i])
-	{
-		j = 0;
-		while (ll.map[i][j])
-		{
-			printf("%c", ll.map[i][j]);
-			j++;
-		}
-		printf("\n");
-		i++;
-	}
 	if (ll.map[ll.cu_y / 65][ll.cu_x / 65] == 'E')
 		put_exit(ll.mlx, ll.cu_x / 65, ll.cu_y / 65);
 	else

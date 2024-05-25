@@ -3,7 +3,6 @@
 
 NAME	:= Game
 CFLAGS	:= -Wall -Wextra -Werror -Wunreachable-code -Ofast 
-#-Wunreachable-code -Ofast 
 LIBMLX	:= ~/MLX42
 
 HEADERS	:= -I ./include -I $(LIBMLX)/include
@@ -16,17 +15,16 @@ all: libmlx $(NAME)
 libmlx:
 	@cmake $(LIBMLX) -B $(LIBMLX)/build && make -C  $(LIBMLX)/build -j4
 
-%.o: %.c
-	@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS) && printf "Compiling: $(notdir $<)"
 
 $(NAME): $(OBJS)
 	@$(CC) $(OBJS) $(MLX_FLAGS) $(LIBS) $(HEADERS) -o $(NAME)
-
+	
+%.o: %.c so_long.h
+	@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS) && printf "Compiling: $(notdir $<)"
+	
 clean:
 	@rm -rf $(OBJS)
-#@rm -rf $(LIBMLX)/build
-
+	@rm -rf $(LIBMLX)/build
 fclean: clean
 	@rm -rf $(NAME)
-
 re: clean all

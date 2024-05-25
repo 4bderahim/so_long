@@ -12,6 +12,16 @@
 
 #include "so_long.h"
 
+void	putnbr(int x)
+{
+	char	char_nbr;
+
+	if (x > 9)
+		putnbr(x / 10);
+	char_nbr = (x % 10) + '0';
+	write(1, &(char_nbr), 1);
+}
+
 int	count_map_hpaths(char *s)
 {
 	int	i;

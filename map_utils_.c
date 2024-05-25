@@ -34,6 +34,7 @@ void	flood_fill(struct s_long *st, int y, int x, char c)
 	flood_fill(st, y, x + 1, '#');
 	flood_fill(st, y, x - 1, '#');
 }
+
 int	coins_len(char **map)
 {
 	int	i;
@@ -80,6 +81,7 @@ int	get_player_position(char **map, char c)
 	}
 	return (0);
 }
+
 char	**get_map_from_file(char *file_name)
 {
 	int	fd;
@@ -87,16 +89,25 @@ char	**get_map_from_file(char *file_name)
 	fd = open(file_name, O_RDONLY);
 	if (fd == -1)
 	{
-		write(2, "[-] Error : invalid file name!", 30);
+		write(2, "Error\n[-] invalid file name!", 28);
 		exit(1);
 	}
 	return (mapper(fd));
 }
+
 struct s_long	set_struct(char *file_name)
 {
-	struct s_long sl;
+	struct s_long	sl;
+
 	sl.map = get_map_from_file(file_name);
 	sl.coins_num = coins_len(sl.map);
+	if (!sl.coins_num)
+		{
+
+			write(2, "Error\n[-] cant find map file!", 29);
+			exit(1);
+		}
 	sl.exit_found = 0;
+	sl.moves = 0;
 	return (sl);
 }

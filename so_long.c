@@ -12,8 +12,8 @@
 
 #include "so_long.h"
 
-#define HEIGHT 600
-#define WIDTH 900
+// #define HEIGHT 600
+// #define WIDTH 900
 
 void	put_bg(mlx_t *mlx, int j, int i)
 {
@@ -47,14 +47,17 @@ int	get_height_width(char **map, int height_or_width_command)
 	}
 }
 
-static void	ft_hook(mlx_key_data_t keydata, void *param)
+void	ft_hook(mlx_key_data_t keydata, void *param)
 {
 	struct s_long	mx;
 
 	(void)keydata;
 	mx = *(struct s_long *)param;
 	if (mlx_is_key_down(mx.mlx, MLX_KEY_ESCAPE))
+	{
 		mlx_close_window(mx.mlx);
+		return ;
+	}
 	else if (mlx_is_key_down(mx.mlx, MLX_KEY_UP))
 		move_the_player(&mx, 1);
 	else if (mlx_is_key_down(mx.mlx, MLX_KEY_RIGHT))
@@ -63,11 +66,12 @@ static void	ft_hook(mlx_key_data_t keydata, void *param)
 		move_the_player(&mx, 4);
 	else if (mlx_is_key_down(mx.mlx, MLX_KEY_DOWN))
 		move_the_player(&mx, 3);
-}
-
-void	check_leaks(void)
-{
-	system("leaks -q Game");
+	else
+		return ;
+	mx.moves++;
+	write(1, "\n", 1);
+	putnbr(mx.moves);
+	*((struct s_long *)param) = mx;
 }
 
 void	free_map(struct s_long ml)
@@ -87,11 +91,10 @@ int	main(int argc, char **argv)
 {
 	struct s_long	ml;
 
-	atexit(check_leaks);
 	if (argc != 2)
 	{
-		write(2, "[-] Error : cant find map file!", 31);
-		return (0);
+		write(2, "Error\n[-] cant find map file!", 29);
+		return (1);
 	}
 	ml = set_struct(argv[1]);
 	flood_fill(&ml, get_player_position(ml.map, 'y'),
@@ -110,7 +113,5 @@ int	main(int argc, char **argv)
 	mlx_loop(ml.mlx);
 	mlx_terminate(ml.mlx);
 	mlx_delete_image(ml.mlx, ml.imgg);
-	free_map(ml);
-	atexit(check_leaks);
-	return (0);
+	return (free_map(ml), 0);
 }
