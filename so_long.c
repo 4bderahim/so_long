@@ -12,9 +12,6 @@
 
 #include "so_long.h"
 
-// #define HEIGHT 600
-// #define WIDTH 900
-
 void	put_bg(mlx_t *mlx, int j, int i)
 {
 	mlx_texture_t	*texture;
@@ -50,7 +47,7 @@ int	get_height_width(char **map, int height_or_width_command)
 void	ft_hook(mlx_key_data_t keydata, void *param)
 {
 	struct s_long	mx;
-	int 			mv;
+	int				mv;
 
 	(void)keydata;
 	mv = 0;
@@ -85,7 +82,7 @@ void	free_map(struct s_long ml)
 	}
 	free(ml.map);
 }
-void d()
+void	d(void)
 {
 	system("leaks -q Game");
 }

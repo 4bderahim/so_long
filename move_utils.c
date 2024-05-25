@@ -92,7 +92,7 @@ int	move_the_player(struct s_long *mx, int direction)
 	y = get_x_y(mlx.imgg, direction, 'y');
 	x = get_x_y(mlx.imgg, direction, 'x');
 	if (mlx.map[y][x] == '1')
-		return 0;
+		return (0);
 	if (mlx.map[y][x] == 'C')
 		put_bg(mlx.mlx, x, y);
 	if (mlx.map[y][x] == 'E')

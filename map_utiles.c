@@ -103,10 +103,10 @@ char	*map_reader(int fd)
 	{
 		sp = (char *)ft_calloc(101, 1);
 		if (!sp)
-			{
-				free(map);
-				return (NULL);
-			}
+		{
+			free(map);
+			return (NULL);
+		}
 		c = read(fd, sp, 100);
 		if (c == -1)
 			exit(0);

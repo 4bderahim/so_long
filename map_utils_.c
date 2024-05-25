@@ -82,14 +82,18 @@ int	get_player_position(char **map, char c)
 	return (0);
 }
 #include <stdio.h>
-int check_file_name(char *file_name)
+
+int	check_file_name(char *file_name)
 {
-	//int i;
-	int size = ft_strlen(file_name);
+	int	size;
+
+	// int i;
+	size = ft_strlen(file_name);
 	if (size < 5)
-		return(0);
+		return (0);
 	size--;
-	if (file_name[size] == 'r' || file_name[size-1] == 'e' || file_name[size-2] == 'b' || file_name[size-3] == '.')
+	if (file_name[size] == 'r' || file_name[size - 1] == 'e' || file_name[size
+		- 2] == 'b' || file_name[size - 3] == '.')
 		return (1);
 	return (0);
 }
@@ -112,15 +116,13 @@ struct s_long	set_struct(char *file_name)
 {
 	struct s_long	sl;
 
-	
 	sl.map = get_map_from_file(file_name);
 	sl.coins_num = coins_len(sl.map);
 	if (!sl.coins_num)
-		{
-
-			write(2, "Error\n[-] cant find map file!", 29);
-			exit(1);
-		}
+	{
+		write(2, "Error\n[-] cant find map file!", 29);
+		exit(1);
+	}
 	sl.exit_found = 0;
 	sl.moves = 0;
 	return (sl);
