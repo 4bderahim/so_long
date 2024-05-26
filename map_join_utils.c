@@ -64,32 +64,29 @@ void	join_to_map(char **sp, char *s, int ii, int index)
 
 char	**mapper(int fd)
 {
-	char	*map_full_road;
+	char	*map_;
 	char	**spilited_map;
 	int		i;
 	int		index;
 
 	index = 0;
 	i = 0;
-	map_full_road = map_reader(fd);
-	if (!map_full_road)
-	{
+	map_ = map_reader(fd);
+	if (!map_)
 		game_error(1);
-	}
 	spilited_map = (char **)malloc(sizeof(char *)
-			* (count_map_hpaths(map_full_road) + 1));
+			* (count_map_hpaths(map_) + 1));
 	if (!spilited_map)
 		game_error(1);
-	spilited_map[count_map_hpaths(map_full_road)] = NULL;
-	while (map_full_road[i])
+	spilited_map[count_map_hpaths(map_)] = NULL;
+	while (map_[i])
 	{
-		if ((map_full_road[i] == '\n' || i == 0) && map_full_road[i
-			+ 1] != '\0')
+		if ((map_[i] == '\n' || i == 0) && map_[i + 1] != '\0')
 		{
-			join_to_map(spilited_map, map_full_road, i, index);
+			join_to_map(spilited_map, map_, i, index);
 			index++;
 		}
 		i++;
 	}
-	return (free(map_full_road), spilited_map);
+	return (free(map_), spilited_map);
 }
