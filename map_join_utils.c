@@ -83,7 +83,8 @@ char	**mapper(int fd)
 	spilited_map[count_map_hpaths(map_full_road)] = NULL;
 	while (map_full_road[i])
 	{
-		if (map_full_road[i] == '\n' || i == 0)
+		if ((map_full_road[i] == '\n' || i == 0) && map_full_road[i
+			+ 1] != '\0')
 		{
 			join_to_map(spilited_map, map_full_road, i, index);
 			index++;

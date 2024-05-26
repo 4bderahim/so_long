@@ -81,13 +81,11 @@ int	get_player_position(char **map, char c)
 	}
 	return (0);
 }
-#include <stdio.h>
 
 int	check_file_name(char *file_name)
 {
 	int	size;
 
-	// int i;
 	size = ft_strlen(file_name);
 	if (size < 5)
 		return (0);
@@ -120,7 +118,7 @@ struct s_long	set_struct(char *file_name)
 	sl.coins_num = coins_len(sl.map);
 	if (!sl.coins_num)
 	{
-		write(2, "Error\n[-] cant find map file!", 29);
+		write(2, "Error\n[-] no coins no party!", 29);
 		exit(1);
 	}
 	sl.exit_found = 0;

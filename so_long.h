@@ -31,7 +31,7 @@ struct			s_long
 int				ft_strlen(char const *s);
 int				check_map(char **map);
 void			putnbr(int x);
-int			move_the_player(struct s_long *mx, int direction);
+int				move_the_player(struct s_long *mx, int direction);
 mlx_image_t		*set_game(struct s_long *ml);
 mlx_image_t		*put_the_cat(mlx_t *mlx, int j, int i);
 void			put_bg(mlx_t *mlx, int j, int i);
