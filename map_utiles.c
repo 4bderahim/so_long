@@ -90,13 +90,13 @@ char	*ft_strjoin(char *s1, char *s2)
 
 char	*map_reader(int fd)
 {
-	char	*sp;
-	char	*map;
-	int		c;
+	char		*sp;
+	char		*map;
+	int			c;
 
 	map = (char *)malloc(1);
 	if (!map)
-		return (NULL);
+		game_error(1);
 	map[0] = 0;
 	c = 1;
 	while (c != 0)
@@ -105,11 +105,11 @@ char	*map_reader(int fd)
 		if (!sp)
 		{
 			free(map);
-			return (NULL);
+			game_error(1);
 		}
 		c = read(fd, sp, 100);
 		if (c == -1)
-			exit(0);
+			game_error(1);
 		map = ft_strjoin(map, sp);
 		free(sp);
 	}

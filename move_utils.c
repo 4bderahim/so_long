@@ -12,6 +12,20 @@
 
 #include "so_long.h"
 
+int	check_file_name(char *file_name)
+{
+	int	size;
+
+	size = ft_strlen(file_name);
+	if (size < 5)
+		return (0);
+	size--;
+	if (file_name[size] == 'r' && file_name[size - 1] == 'e' && file_name[size
+			- 2] == 'b' && file_name[size - 3] == '.')
+		return (1);
+	return (0);
+}
+
 int	check_collect(char **map)
 {
 	int	i;

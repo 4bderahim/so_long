@@ -6,13 +6,13 @@
 /*   By: ael-krid <ael-krid@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 11:45:24 by ael-krid          #+#    #+#             */
-/*   Updated: 2024/05/23 11:45:25 by ael-krid         ###   ########.fr       */
+/*   Updated: 2024/05/26 20:00:17 by ael-krid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SO_LONG_H
 # define SO_LONG_H
-# include </Users/ael-krid/MLX42/include/MLX42/MLX42.h>
+# include <MLX42/MLX42.h>
 # include <fcntl.h>
 # include <stdlib.h>
 # include <unistd.h>
@@ -39,6 +39,7 @@ void			put_exit(mlx_t *mlx, int j, int i);
 mlx_image_t		*put_player(char **map, mlx_t *mlx);
 void			put_walls(mlx_t *mlx, struct s_long mx);
 void			game_error(int err_flag);
+int				check_file_name(char *file_name);
 char			**mapper(int fd);
 char			*map_reader(int fd);
 void			flood_fill(struct s_long *st, int y, int x, char c);

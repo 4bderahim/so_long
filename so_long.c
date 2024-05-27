@@ -82,10 +82,7 @@ void	free_map(struct s_long ml)
 	}
 	free(ml.map);
 }
-void	d(void)
-{
-	system("leaks -q Game");
-}
+
 int	main(int argc, char **argv)
 {
 	struct s_long	ml;
@@ -95,7 +92,6 @@ int	main(int argc, char **argv)
 		write(2, "Error\n[-] cant find map file!", 29);
 		return (1);
 	}
-	atexit(d);
 	ml = set_struct(argv[1]);
 	check_map(ml.map);
 	flood_fill(&ml, get_player_position(ml.map, 'y'),

@@ -72,10 +72,10 @@ char	**mapper(int fd)
 	index = 0;
 	i = 0;
 	map_ = map_reader(fd);
-	if (!map_)
+	if (ft_strlen(map_) < 15)
 		game_error(1);
-	spilited_map = (char **)malloc(sizeof(char *)
-			* (count_map_hpaths(map_) + 1));
+	spilited_map = (char **)malloc(sizeof(char *) * (count_map_hpaths(map_)
+				+ 1));
 	if (!spilited_map)
 		game_error(1);
 	spilited_map[count_map_hpaths(map_)] = NULL;

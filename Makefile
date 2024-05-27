@@ -1,7 +1,7 @@
 
 
 
-NAME	:= Game
+NAME	:= so_long
 CFLAGS	:= -Wall -Wextra -Werror -Wunreachable-code -Ofast 
 LIBMLX	:= ~/MLX42
 
